@@ -14,8 +14,4 @@ const requestRefresh = async (refresh) => {
 
 applyAuthTokenInterceptor(axiosInstance, {
     requestRefresh,
-    header: "Authorization",
-    headerPrefix: "Bearer"
 }); 
-
-export const isLoggedInProcider = (props) 
