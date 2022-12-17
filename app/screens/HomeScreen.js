@@ -1,29 +1,40 @@
 import React, { useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, TextInput, Title } from 'react-native-paper';
-import { View, StyleSheet, AsyncStorage} from 'react-native';
-import { axiosInstance } from '../api';
+import { Title, Headline, Divider} from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
 import {AuthContext} from '../context/AuthContext';
-import {setAuthTokens, isLoggedIn, getAccessToken, getRefreshToken, clearAuthTokens} from 'react-native-axios-jwt';
+import {Vendors} from '../components/Vendors.js'
 
+export const HomeScreen = ({navigation}) => {
+    const {userInfo} = useContext(AuthContext);
 
-export const HomeScreen = () => {
-    const {userInfo, logout, myIsLoggedIn} = useContext(AuthContext);
-
-    const tests = () => {
-        console.log(userInfo)
-        getAccessToken().then((res) => {console.log(res)})
-        getRefreshToken().then((res) => {console.log(res)})
-        console.log(myIsLoggedIn)
-
-    }
 
     return(
         <SafeAreaView>
-            <Button onPress={logout}>DEATH</Button>
-            <Button onPress={tests}>TEST</Button>
-            <Title>Hello {userInfo.first_name}</Title>
+            <View style={style.container}>
+                <Title style={style.titty}>Hello {userInfo.first_name}.</Title>
+                <Headline style={style.titty}>What would you like</Headline>
+                <Headline style={style.titty}>to order for lunch today?</Headline>
+            </View>
+            {/* <Title style={style.subheading}>Restaurants.</Title> */}
+            <Vendors navigation={navigation}/>
+            
 
         </SafeAreaView>
     )
 }
+
+export const style = StyleSheet.create({
+    container: {
+        marginHorizontal:25,
+        marginVertical:25
+    },
+    titty: {
+        fontSize:32,
+        marginBottom:5
+    },
+    subheading: {
+        marginHorizontal:25,
+        marginBottom:5
+    }
+})

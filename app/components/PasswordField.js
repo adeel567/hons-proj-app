@@ -21,7 +21,7 @@ export const PasswordField = (props) => {
 
     return (
         <View>
-        <TextInput label="Password" secureTextEntry={hidden} onChangeText={onChangeText} right={<TextInput.Icon
+        <TextInput label={props.label} secureTextEntry={hidden} onChangeText={onChangeText} right={<TextInput.Icon
                                                                                             name={icon}
                                                                                             onPress={toggleHidden}
                                                                                             />}/>
@@ -33,4 +33,8 @@ export const PasswordField = (props) => {
         </View>
     );
 };
+
+PasswordField.defaultProps = {
+    label: "Password"
+}
 

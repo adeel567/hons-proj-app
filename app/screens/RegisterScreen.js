@@ -3,6 +3,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar, Button, Card, TextInput, Title} from 'react-native-paper';
 import { ScrollView, View, StyleSheet, Alert} from 'react-native';
 import {AuthContext} from '../context/AuthContext';
+import { PasswordField } from '../components/PasswordField';
+import { NonEmptyTextField } from '../components/NonEmptyTextField';
 
 
 export const RegisterScreen = () => {   
@@ -13,9 +15,26 @@ export const RegisterScreen = () => {
     const [lastName, setLastName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [confirmPassword, setConfirmPassword] = React.useState("");
 
+    const register_local = () => {
+        if (password != confirmPassword) {
+            Alert.alert('An error occurred :(', "Passwords do not match", [
+                { text: 'OK'},
+            ]);
+            return
+        } 
+        if (password.length==0 || username.length==0 || firstName.length==0 || lastName.length==0 || confirmPassword.length==0 || email.length==0) {
+            Alert.alert('An error occurred :(', "No field can be left empty", [
+                { text: 'OK'},
+            ]);
+            return
+        }
+        console.log(email)
 
-    const register_local = () => {register()}
+        register(firstName,lastName,username,email,password)
+
+    }
  
     return(
         <SafeAreaView>
@@ -25,12 +44,14 @@ export const RegisterScreen = () => {
                     <Appbar.Content title="Register as a new user"/>
                 </Appbar> */}
                 <View style={style.content}>
-                <TextInput  label="First name"/>
-                <TextInput label="Last name"/>
-                <TextInput label="Email address" keyboardType='email-address'/>
-                <TextInput label="Password" secureTextEntry={true} right={<TextInput.Icon name="eye-off-outline"/>}/>
-                <TextInput label="Confirm password" secureTextEntry={true} right={<TextInput.Icon name="eye-off-outline"/>}/>
-                <Button style={style.button} onPress={register_local} mode="contained"> Register</Button>
+                    <Title style={style.title}>Pop your details in below to sign up!</Title>
+                    <NonEmptyTextField label={"First Name"} text={firstName} setText={setFirstName}/>
+                    <NonEmptyTextField label={"Last Name"} text={lastName} setText={setLastName}/>
+                    <NonEmptyTextField label={"Username"} text={username} setText={setUsername}/>
+                    <NonEmptyTextField label={"Email"} text={email} setText={setEmail}/>
+                    <PasswordField password={password} setPassword={setPassword}/>
+                    <PasswordField label={"Confirm Password"} password={confirmPassword} setPassword={setConfirmPassword}/>
+                    <Button style={style.button} onPress={register_local} mode="contained"> Register</Button>
                 </View>
             </ScrollView>
          </SafeAreaView>
@@ -38,10 +59,11 @@ export const RegisterScreen = () => {
 }
 
 export const style = StyleSheet.create({
-        content: {
-            padding: 25,
-        },
-        button: {
-            marginTop:15,
-        }
+    content: {
+        marginHorizontal:25,
+        justifyContent:"space-evenly",
+    },
+    title: {
+        marginBottom: 15
+    }
 })
