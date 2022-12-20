@@ -11,14 +11,13 @@ export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [splashLoading, setSplashLoading] = useState(false);
   const [myIsLoggedIn, setMyIsLoggedIn] = useState(false);
   const [cartContent, setCartContent] = useState({});
   const [cartBadge, setCartBadge] = useState(0);
-  // const [counter, setCounter] = useState(0);
+  const [cartDeliveryLocation, setCartDeliveryLocation] = useState()
+  const [cartDeliveryDate, setCartDeliveryDate] = useState()
 
   const register = (firstname, lastname, username, email, password) => {
-    setIsLoading(true);
 
     var params = {
       "username": username,
@@ -34,7 +33,6 @@ export const AuthProvider = ({children}) => {
         login(username,password)
       }})
     .catch( error => {
-        setIsLoading(false);
         console.log(error.response.data)
         var err_text = "Issue when communicating with ILP API, please try again later."
         if (error?.response?.data) { //if error from API exists, return that message instead.
@@ -46,11 +44,9 @@ export const AuthProvider = ({children}) => {
             { text: 'OK'},
         ]);
       })
-    setIsLoading(false)
   };
 
   const login = (username, password) => {
-    setIsLoading(true);
 
     const params = {
         "username": username,
@@ -67,7 +63,6 @@ export const AuthProvider = ({children}) => {
           refreshCache();
           console.log("token: " + response.data.access);
           setMyIsLoggedIn(true);
-          setIsLoading(false)  
         })
     })
     .catch(error => {
@@ -80,7 +75,6 @@ export const AuthProvider = ({children}) => {
         Alert.alert('An error occurred :(', err_text, [
             { text: 'OK'},
         ]);
-        setIsLoading(false);
       });
  
     
@@ -88,10 +82,8 @@ export const AuthProvider = ({children}) => {
 
   const logout = () => {
     console.log("logging out..")
-    setIsLoading(true);
     clearAuthTokens().then(setMyIsLoggedIn(false))
     AsyncStorage.clear();
-    setIsLoading(false)
   };
 
 
@@ -109,37 +101,18 @@ export const AuthProvider = ({children}) => {
   }
 
   const fetchUserInfo = () => {
-    setIsLoading(true)
     axiosInstance.get("/profile").then((response) => {
       setUserInfo(response.data);
       AsyncStorage.setItem('userInfo', JSON.stringify(response.data));
       console.log(response.data)
-      setIsLoading(false)
     })
     .catch(e => {
       console.log(`fetch profile error ${e}`);
-      setIsLoading(false);
+      logout()
     })
 
    
   }
-
-  // const updateLoggedIn = async () => {
-  //   isLoggedIn().then( (val) => {
-  //     setMyIsLoggedIn(val)
-  //     console.log('logged in: ' + myIsLoggedIn)
-  //     if (myIsLoggedIn && Object.keys(userInfo).length === 0 ) {
-  //       try {
-  //         const value = AsyncStorage.getItem("userInfo");
-      
-  //         if (value !== null) {
-  //           setUserInfo(JSON.parse(value));
-  //         }
-  //       } catch (e) {
-  //         alert('Failed to fetch userInfo from storage');
-  //       }
-  //     }
-  // })};
 
   const refreshLoggedIn = () => {
     setIsLoading(true)
@@ -150,30 +123,22 @@ export const AuthProvider = ({children}) => {
         refreshCache();
       }
       console.log(`refreshLog ${myIsLoggedIn}`)
+      setIsLoading(false)
     })
-    setIsLoading(false)
   }
 
 
   useEffect(() => {
-    console.log("updating*******1")
+    console.log("auth use effect")
     if (!myIsLoggedIn) {
       refreshLoggedIn();
     }
   },[]);
 
   const refreshCache = () => {
-    setIsLoading(true)
     var x = fetchUserInfo();
     var y = fetchCartContent();    
-    setIsLoading(false)
   }
-
-  // const addToCart = (id) => {
-  // axiosInstance.post(`/cart/item/${id}`).then( (response) => {
-
-  // )}
-
 
   return (
     <AuthContext.Provider
@@ -181,15 +146,19 @@ export const AuthProvider = ({children}) => {
         isLoading,
         myIsLoggedIn,
         userInfo,
-        splashLoading,
         refreshCache,
         register,
         login,
         logout,
+
         cartContent,
         cartBadge,
-        fetchCartContent
-        // addToCart
+        fetchCartContent,
+
+        cartDeliveryLocation,
+        setCartDeliveryLocation,
+        cartDeliveryDate,
+        setCartDeliveryDate,
       }}>
       {children}
     </AuthContext.Provider>

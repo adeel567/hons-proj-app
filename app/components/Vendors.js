@@ -20,14 +20,16 @@ export const Vendors = (props) => {
     const loadVendorData = () => {
         setLoading(true)
 
-        axiosInstance.get("/restaurants/")
+        axiosInstance.get("/restaurants")
         .then((response) => {
             // setVendors(response.data)
             setFullVendors(response.data)
             setVendors(doSort(response.data)) //default on render
+            setLoading(false)
         })
         .catch(e => {
             console.log(e)
+            setLoading(false)
             Alert.alert('An error occurred :(', "Issue connecting to ILP API, please try again later.", [
                 { 
                     text: 'Try Again',
@@ -36,7 +38,6 @@ export const Vendors = (props) => {
                 { text: 'OK'},
             ]);
             })
-        .then(setLoading(false))
     }
 
     React.useEffect( () => {

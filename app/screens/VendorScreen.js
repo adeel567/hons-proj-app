@@ -30,9 +30,11 @@ export const VendorScreen = ({navigation,route}) => {
         .then((response) => {
             setFullMenu(response.data)
             setMenu(doSort(response.data)) //default on render
+            setLoading(false)
         })
         .catch(e => {
             console.log(e)
+            setLoading(false)
             Alert.alert('An error occurred :(', "Issue connecting to ILP API, please try again later.", [
                 { 
                     text: 'Try Again',
@@ -41,7 +43,6 @@ export const VendorScreen = ({navigation,route}) => {
                 { text: 'OK'},
             ]);
             })
-        .then(setLoading(false))
     }
 
     React.useEffect( () => {
@@ -108,7 +109,7 @@ export const VendorScreen = ({navigation,route}) => {
                             subtitle="Tap to view about info and location."
                             right={(props) => <IconButton {...props} icon="chevron-right"/>}
                             />
-                            </Card>
+                    </Card>
                     {/* <Title style={{}}>Menu</Title> */}
                     <KeyboardAvoidingView>
                         <MenuBar sortVal={sortVal} setSortVal={setSortVal} setQuery={setQuery} query={query} onChange={doSearch} />

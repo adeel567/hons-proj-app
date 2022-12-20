@@ -4,19 +4,22 @@ import { AuthContext } from '../context/AuthContext';
 import { axiosInstance } from '../api';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { ActivityIndicator } from 'react-native-paper';
 
 export const RemoveFromCartButton = (props) => {
     const navigation = useNavigation();
     const {fetchCartContent} = React.useContext(AuthContext)
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const goToCart = () => { 
         navigation.navigate('Cart');
     }
 
     const removeCall = () => {
+        setIsLoading(true)
         axiosInstance.delete(`/cart/item/${props.id}`)
         .then((response) => {
+            setIsLoading(false)
             fetchCartContent()
             if (response.status = 200) {
                 Alert.alert('Add to cart', response.data.res, [
@@ -25,6 +28,7 @@ export const RemoveFromCartButton = (props) => {
                 ]);            }
         })
         .catch((error) => {
+            setIsLoading(false)
             fetchCartContent()
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
@@ -38,6 +42,9 @@ export const RemoveFromCartButton = (props) => {
     }
 
     return (
+        isLoading ?
+        <ActivityIndicator animating={true}/>
+        :
         <Button onPress={removeCall}>{props.children}</Button>
     )
 }

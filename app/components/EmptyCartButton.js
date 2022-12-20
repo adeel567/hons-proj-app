@@ -4,14 +4,17 @@ import { AuthContext } from '../context/AuthContext';
 import { axiosInstance } from '../api';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { ActivityIndicator } from 'react-native-paper';
 
 export const EmptyCartButton = (props) => {
     const {fetchCartContent} = React.useContext(AuthContext)
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const emptyCall = () => {
+        setIsLoading(true)
         axiosInstance.delete(`/cart`)
         .then((response) => {
+            setIsLoading(false)
             fetchCartContent()
             if (response.status = 200) {
                 Alert.alert('Empty cart', response.data.res, [
@@ -19,6 +22,7 @@ export const EmptyCartButton = (props) => {
                 ]);            }
         })
         .catch((error) => {
+            setIsLoading(false)
             fetchCartContent()
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
@@ -31,6 +35,9 @@ export const EmptyCartButton = (props) => {
     }
 
     return (
-        <Button onPress={emptyCall}>{props.children}</Button>
+        isLoading ?
+        <ActivityIndicator animating={true}/>
+        :
+        <Button {...props} color="red" icon={"delete"} onPress={emptyCall}>{props.children}</Button>
     )
 }

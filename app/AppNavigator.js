@@ -14,6 +14,11 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActivityIndicator } from 'react-native-paper';
 import { VendorAbout } from './components/VendorAbout';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+import {ChooseDeliveryLocation} from './screens/ChooseDeliveryLocation'
+// import {ChooseDeliveryDate} from './screens/ChooseDeliveryDate'
+
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -52,10 +57,11 @@ export const AppStack = () => {
       />
 
       <Tab.Screen
-        name="Cart" 
-        component={CartScreen} 
+        name="CartStacl" 
+        component={CartStack} 
         options={{
-          tabBarBadge: cartBadge,
+          tabBarLabel: "Cart",
+          tabBarBadge: cartBadge>0 ? cartBadge : false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="cart" color={color} size={25} />
           )
@@ -106,5 +112,15 @@ const HomeStack = () => {
       <Stack.Screen name="About"  component={VendorAbout}/>
     </Stack.Navigator>
   )
- 
+}
+
+const CartStack = () => {
+  return(
+    <Stack.Navigator>
+    <Stack.Screen options={{headerShown:true}} name="Cart" component={CartScreen} />
+    <Stack.Screen name="Choose Delivery Location" component={ChooseDeliveryLocation} />
+    {/* <Stack.Screen name="Choose Delivery Date" component={ChooseDeliveryDate} /> */}
+
+    </Stack.Navigator>
+  )
 }
