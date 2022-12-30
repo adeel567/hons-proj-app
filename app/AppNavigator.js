@@ -18,6 +18,13 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import {ChooseDeliveryLocation} from './screens/ChooseDeliveryLocation'
 // import {ChooseDeliveryDate} from './screens/ChooseDeliveryDate'
+import { OrderDetailsScreen } from './screens/OrderDetailsScreen';
+import { Alert, Platform } from 'react-native';
+import * as Device from 'expo-device';
+import { axiosInstance } from './api';
+import { useNavigation } from '@react-navigation/native';
+// import { CommonActions } from '@react-navigation/native';
+
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -43,6 +50,84 @@ export const AppNavigator = () => {
 
 export const AppStack = () => {
   const {cartBadge} = useContext(AuthContext);
+
+  //do push notification enrollment when logged in only. 
+  async function registerForPush() {
+    let token;
+
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+    const params = {
+      "push_token": token
+    }
+    axiosInstance.post("/profile/push-token", params)
+    .catch((error) => {
+      console.log(error.response.data)
+    })
+
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+  }
+
+  ///handle push notifications
+  const nav = useNavigation();
+
+  // const handleNotification = notificationRes => {
+  //   const orderNo = notificationRes.notification.request.content.data.orderNo
+  // }
+
+  // useEffect(() => {
+  //   Notifications.addNotificationResponseReceivedListener(handleNotification);
+  // },[])
+
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  useEffect(() => {
+    if (lastNotificationResponse) {
+      const orderNo = lastNotificationResponse.notification.request.content.data.orderNo
+      console.log(orderNo)
+      nav.navigate('OrderStack', {
+        screen: 'OrderDetailsScreen',
+        params: {order_id: orderNo},
+        initial: false
+
+      })
+    }
+  },[lastNotificationResponse])
+
+  useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+    registerForPush()
+  }, [] )
+
+
+
   return (
     <Tab.Navigator>
 
@@ -57,7 +142,7 @@ export const AppStack = () => {
       />
 
       <Tab.Screen
-        name="CartStacl" 
+        name="CartStack" 
         component={CartStack} 
         options={{
           tabBarLabel: "Cart",
@@ -69,9 +154,10 @@ export const AppStack = () => {
       />
 
       <Tab.Screen
-        name="Orders" 
-        component={OrdersScreen} 
+        name="OrderStack" 
+        component={OrderStack} 
         options={{
+          tabBarLabel: "Orders",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="clipboard" color={color} size={25} />
           )
@@ -120,6 +206,16 @@ const CartStack = () => {
     <Stack.Screen options={{headerShown:true}} name="Cart" component={CartScreen} />
     <Stack.Screen name="Choose Delivery Location" component={ChooseDeliveryLocation} />
     {/* <Stack.Screen name="Choose Delivery Date" component={ChooseDeliveryDate} /> */}
+
+    </Stack.Navigator>
+  )
+}
+
+const OrderStack = () => {
+  return(
+    <Stack.Navigator>
+    <Stack.Screen options={{headerShown:true}} name="Orders" component={OrdersScreen} />
+    <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
 
     </Stack.Navigator>
   )
