@@ -19,7 +19,6 @@ export const VendorScreen = ({navigation,route}) => {
     const [query, setQuery] = React.useState("");
 
     const viewAbout = () => {
-        console.log("s")
         navigation.navigate('About', {vendor:vendor})
     }
 

@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Menu, Divider, Modal, Dialog, Portal, Text, Button, Provider, ToggleButton, IconButton, MaterialIcons, Searchbar} from 'react-native-paper';
 
 
-export const HomeHeader = (props) => {
+export const OrderHeader = (props) => {
     const [visible, setVisible] = React.useState(false);
     const showSort = () => setVisible(true);
     const hideSort = () => setVisible(false);
@@ -23,7 +23,7 @@ export const HomeHeader = (props) => {
                 style={{
                     borderRadius: 10,
                 }}
-                placeholder='Search for restaurants.' 
+                placeholder='Search for orders by ID or date.' 
                 onChangeText={queryText => props.onChange(queryText)}
                 value = {props.query}/>
 
@@ -37,9 +37,12 @@ export const HomeHeader = (props) => {
           visible={visible}
           onDismiss={hideSort}
           anchor={<IconButton onPress={showSort} icon="sort" size={30}/>}>
-          <Menu.Item icon={"sort-alphabetical-ascending-variant"} onPress={() => {props.setSortVal("name-asc"), hideSort()}} title="Name (asc)" />
+          <Menu.Item icon={"sort-numeric-ascending-variant"} onPress={() => {props.setSortVal("ID-asc"), hideSort()}} title="Order ID (asc)" />
+          <Menu.Item icon={"sort-numeric-descending-variant"} onPress={() => {props.setSortVal("ID-desc"), hideSort()}} title="Order ID (desc)" />
           <Divider />
-          <Menu.Item icon={"sort-alphabetical-descending-variant"} onPress={() => {props.setSortVal("name-desc"), hideSort()}} title="Name (desc)" />
+          <Menu.Item icon={"sort-calendar-ascending-variant"} onPress={() => {props.setSortVal("date-asc"), hideSort()}} title="Delivery Date (asc)" />
+          <Menu.Item icon={"sort-calendar-descending-variant"} onPress={() => {props.setSortVal("date-desc"), hideSort()}} title="Delivery Date (desc)" />
+
         </Menu>
       </View>
         </View>

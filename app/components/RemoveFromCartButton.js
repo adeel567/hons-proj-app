@@ -42,9 +42,6 @@ export const RemoveFromCartButton = (props) => {
     }
 
     return (
-        isLoading ?
-        <ActivityIndicator animating={true}/>
-        :
-        <Button onPress={removeCall}>{props.children}</Button>
+        <Button {...props} loading={isLoading} onPress={removeCall}>{props.children}</Button>
     )
 }

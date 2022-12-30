@@ -42,9 +42,6 @@ export const AddToCartButton = (props) => {
     }
 
     return (
-        isLoading ?
-        <ActivityIndicator animating={true}/>
-        :
-        <Button {...props} onPress={addCall}>{props.children}</Button>
+        <Button {...props} loading={isLoading} onPress={addCall}>{props.children}</Button>
     )
 }

@@ -7,13 +7,15 @@ import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native-paper';
 
 export const EmptyCartButton = (props) => {
-    const {fetchCartContent} = React.useContext(AuthContext)
+    const {fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate} = React.useContext(AuthContext)
     const [isLoading, setIsLoading] = React.useState(false);
 
     const emptyCall = () => {
         setIsLoading(true)
         axiosInstance.delete(`/cart`)
         .then((response) => {
+            setCartDeliveryLocation()
+            setCartDeliveryDate()
             setIsLoading(false)
             fetchCartContent()
             if (response.status = 200) {

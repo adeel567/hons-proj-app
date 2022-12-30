@@ -82,8 +82,16 @@ export const AuthProvider = ({children}) => {
 
   const logout = () => {
     console.log("logging out..")
-    clearAuthTokens().then(setMyIsLoggedIn(false))
-    AsyncStorage.clear();
+    axiosInstance.delete("/profile/push-token") //remove push token when logged out.
+    .then( () => {
+      clearAuthTokens().then(setMyIsLoggedIn(false))
+      AsyncStorage.clear();
+    })
+    .catch((error) => {
+      console.log(error.response.data)
+      setMyIsLoggedIn(false)
+    })
+
   };
 
 

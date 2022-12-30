@@ -9,11 +9,16 @@ import { useNavigation } from '@react-navigation/native';
 export const SubmitOrderButton = (props) => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = React.useState(false);
-    const {fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate} = React.useContext(AuthContext)
+    const {fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate, cartDeliveryLocation, cartDeliveryDate} = React.useContext(AuthContext)
 
+    const goToOrder = (id) => {
+        navigation.navigate("Orders")
+        navigation.navigate("OrderDetailsScreen", {order_id:id})
+
+    }
 
     const submitCall = () => {
-        if (!(props.delivery_date && props.delivery_location)) {
+        if (!(cartDeliveryLocation && cartDeliveryDate)) {
             Alert.alert('Submit order', "Valid delivery date and location must be set before submitting an order", [
                 { text: 'OK'},
             ]);     
@@ -21,10 +26,12 @@ export const SubmitOrderButton = (props) => {
         }
         setIsLoading(true)
         const params = {
-            "delivery_date" : props.delivery_date,
-            "delivery_longitude" : props.delivery_location.delivery_longitude,
-            "delivery_latitude" : props.delivery_location.delivery_latitude
+            "delivery_date" : cartDeliveryDate,
+            "delivery_longitude" : cartDeliveryLocation.delivery_longitude,
+            "delivery_latitude" : cartDeliveryLocation.delivery_latitude
         }
+
+        
 
         console.log(params)
         axiosInstance.post(`/checkout/submit`, params)
@@ -33,8 +40,12 @@ export const SubmitOrderButton = (props) => {
             setCartDeliveryLocation();
             fetchCartContent().then(setIsLoading(false))
             if (response.status = 200) {
+                const id = response.data.order_number
                 Alert.alert('Submit order', response.data.res, [
-                    { text: 'Go To Orders'},
+                    { 
+                        text: 'Go To Orders',
+                        onPress: goToOrder(id)
+                    },
                     { text: 'OK'},
                     
                 ]);            

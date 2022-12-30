@@ -11,6 +11,7 @@ import { AuthContext } from '../context/AuthContext';
 export const ChooseDeliveryLocation = (props) => {
     const navigation = useNavigation();
     const [isLoading, setisLoading] = React.useState(false);
+    const thres = 6;
 
     const {setCartDeliveryLocation, cartDeliveryLocation} = React.useContext(AuthContext);
     const [region, setRegion] = React.useState({
@@ -20,9 +21,22 @@ export const ChooseDeliveryLocation = (props) => {
         longitudeDelta: 0.01
     });
 
-    const onRegionChange = region => {
-        setRegion(region)
-        }
+    const onRegionChange = (newRegion, {isGesture:boolean}) => {
+      if (region.latitude.toFixed(thres) !== newRegion.latitude.toFixed(thres)
+          || region.longitude.toFixed(thres) !== newRegion.longitude.toFixed(thres)) {
+            console.log(newRegion)
+            setRegion(newRegion)
+          }
+    }
+
+    React.useEffect( () => {
+      if (cartDeliveryLocation?.delivery_latitude) {
+        navigation.setOptions({headerTitle: "Update Delivery Location"})
+      }
+
+    },[])
+
+
 
     const confirmLocation = () => {
         setisLoading(true)
