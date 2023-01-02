@@ -1,23 +1,19 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { MenuItem } from '../components/MenuItem';
-import { axiosInstance, BASE_URL } from '../api';
 import { Card, Divider, IconButton, List, Paragraph, Title, ActivityIndicator } from 'react-native-paper';
-import { MenuBar } from '../components/MenuBar';
 import {filter, orderBy}  from 'lodash';
 import MapView, { Marker } from 'react-native-maps';
 
-export const VendorAbout = ({navigation, route}) => {
+export const VendorAboutScreen = ({navigation, route}) => {
     const vendor = route.params.vendor
 
     return (
         <View style={styles.container}>
-            <Card style={{marginTop:25}}>
+            <Card style={{marginTop:25, borderTopLeftRadius:10, borderTopRightRadius:10, borderBottomLeftRadius:0, borderBottomRightRadius:0}}>
                 <Card.Title title="Location"/>
                 <Card.Content>
                     <Paragraph>
-                        Tap on point below for directions.
+                        Tap on point below for the location information.
                     </Paragraph>
                 </Card.Content>
             </Card>
@@ -41,7 +37,7 @@ export const VendorAbout = ({navigation, route}) => {
 
            
 
-                <Card style={{marginTop:25}}>
+                <Card style={{marginTop:25, borderRadius:10}}>
                     <Card.Title title="Description"/>
                     <Card.Content>
                         <Paragraph>{vendor.description}</Paragraph>
@@ -65,10 +61,12 @@ export const VendorAbout = ({navigation, route}) => {
     const styles = StyleSheet.create({
       container: {
         flex: 1,
+        marginHorizontal:15
       },
       map: {
         width: '100%',
         height: '40%',
+        borderBottomLeftRadius:15, borderBottomRightRadius:15
         // marginBottom:-100
       },
     });

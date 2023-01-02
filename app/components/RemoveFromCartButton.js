@@ -42,6 +42,6 @@ export const RemoveFromCartButton = (props) => {
     }
 
     return (
-        <Button {...props} loading={isLoading} onPress={removeCall}>{props.children}</Button>
+        <Button {...props} loading={isLoading} icon={"cart-minus"} color={"darkorange"} onPress={removeCall}>{props.children}</Button>
     )
 }

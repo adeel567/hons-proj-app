@@ -13,8 +13,10 @@ export const MenuItem = (props) => {
             <Title style={{marginTop:7}}>{props.item.name}</Title>
             <Paragraph>{props.item.description}</Paragraph>
             <Subheading>£{Number(((props.item.pence)/100)).toFixed(2)}</Subheading>
-            <AddToCartButton navigation={props.navigation} id={props.item.id}>Add to cart</AddToCartButton>
         </Card.Content>
+        <Card.Actions style={{alignSelf: "center"}}>
+            <AddToCartButton color="goldenrod" navigation={props.navigation} id={props.item.id}>Add to cart</AddToCartButton>
+        </Card.Actions>
     </Card>
     )
 }

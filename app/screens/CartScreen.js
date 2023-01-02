@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Card, IconButton, Paragraph, Provider, Subheading, Title } from 'react-native-paper';
+import { Button, Card, Divider, IconButton, Paragraph, Provider, Subheading, Title } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 import { axiosInstance } from '../api';
@@ -14,9 +14,6 @@ import DatePicker from 'react-native-neat-date-picker';
 
 export const CartScreen = () => {
     const {cartContent, fetchCartContent, isLoading, cartDeliveryLocation, cartDeliveryDate, setCartDeliveryLocation, setCartDeliveryDate} = React.useContext(AuthContext)
-    // const [deliveryLocation, setDeliveryLocation] = React.useState() //use context state instead
-    // const [deliveryDate, setDeliveryDate] = React.useState()
-
     const [showDatePickerSingle, setShowDatePickerSingle] = React.useState(false)
 
     React.useEffect(() => {
@@ -58,7 +55,7 @@ export const CartScreen = () => {
         <FlatList 
             ListHeaderComponent=
             {
-            <View>
+            <View style={{marginBottom:15}}>
             </View>
 
             }
@@ -66,14 +63,18 @@ export const CartScreen = () => {
             ListEmptyComponent = {noResults}
             renderItem = {({ item }) => {
             return (
-                <Card>
-                    <Card.Content>
-                    <Card.Title title={item.name}/>
-                    <AddToCartButton id={item.id}>Add another</AddToCartButton>
-                    <RemoveFromCartButton id={item.id}>Remove from Cart</RemoveFromCartButton>
-
-                    </Card.Content>
-                </Card>
+                <View style={{marginHorizontal:25, marginVertical:10}}>
+                    <Card style={{borderRadius:10}}>
+                        <Card.Title title={item.name} subtitle={"Sold by " + item.restaurant_name}/>
+                        <Card.Content style={{alignItems:"flex-end"}}>
+                            <Paragraph>£{Number(((item.pence)/100)).toFixed(2)}</Paragraph>
+                        </Card.Content>
+                        <Card.Actions style={{marginTop:-39}}>
+                            <AddToCartButton id={item.id}>Add another</AddToCartButton>
+                            <RemoveFromCartButton id={item.id}>Remove</RemoveFromCartButton>
+                        </Card.Actions>
+                    </Card>
+                </View>
             ) 
             }}
             keyExtractor={(item, index) => index}
@@ -84,12 +85,16 @@ export const CartScreen = () => {
                 if (cartContent.items.length <=0) {
                     return (<View/>)
                 } else {
-                    return (<CartFooter 
+                    return (
+                    <View>
+                        <CartFooter 
                         deliveryDate={cartDeliveryDate} 
                         deliveryLocation={cartDeliveryLocation}
                         // setDeliveryLocation={setDeliveryLocation} 
                         showDatePickerSingle={showDatePickerSingle}
-                        setShowDatePickerSingle={setShowDatePickerSingle}/>)
+                        setShowDatePickerSingle={setShowDatePickerSingle}/>
+                    </View>
+                    )
                 }
             }}
 

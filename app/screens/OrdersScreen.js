@@ -1,18 +1,12 @@
 import React, { useContext } from 'react';
 import { Button, Card, IconButton, Paragraph, Provider, Subheading, Title } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
 import { axiosInstance } from '../api';
 import { Alert, FlatList, RefreshControl, View } from 'react-native';
-import { AddToCartButton } from '../components/AddToCartButton';
-import { RemoveFromCartButton } from '../components/RemoveFromCartButton';
-import { EmptyCartButton } from '../components/EmptyCartButton';
-import { BASE_URL } from '../api';
-import { MenuItem } from '../components/MenuItem';
-import { CartFooter } from '../components/CartFooter';
-import DatePicker from 'react-native-neat-date-picker';
 import { ActivityIndicator } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { OrderHeader } from '../components/OrderHeader';
+import {filter, orderBy, uniq, map}  from 'lodash';
 
 
 export const OrdersScreen = () => {
@@ -22,7 +16,10 @@ export const OrdersScreen = () => {
     const [loading, setLoading] = React.useState("false");
     const [refresh, setRefresh] = React.useState(false)
     const [sortVal, setSortVal] = React.useState("date-desc")
-    // const [query, setQuery] = React.useState("");
+    const [filterVal, setFilterVal] = React.useState("ALL")
+    const [query, setQuery] = React.useState("");
+    const [altered, setAltered] = React.useState(false);
+    const {triggerOrderRefresh, setTriggerOrderRefresh} = React.useContext(AuthContext)
 
 
     const loadOrderData = () => {
@@ -32,9 +29,8 @@ export const OrdersScreen = () => {
         .then((response) => {
             setOrders(response.data)
             setFullOrders(response.data)
-            // setOrders(doSort(response.data)) //default on render
+            setOrders(doSort(response.data)) //default on render
             setLoading(false)
-            // console.log(orders[1])
         })
         .catch(e => {
             console.log(e)
@@ -53,7 +49,60 @@ export const OrdersScreen = () => {
 
     React.useEffect(() => {
         loadOrderData() //refresh on first load
-    },[])
+    },[triggerOrderRefresh])
+
+
+    React.useEffect( () => {
+        setOrders(doSort(orders)); //do when sort value changes
+    },[sortVal])
+
+    React.useEffect( () => {
+        doFilter() //do when filter value changes
+    }, [filterVal])
+
+    const doSort = (data) => {
+        switch(sortVal) {
+            case "date-asc":
+                var dd = (orderBy(data, ['delivery_date'],['asc']))
+                return dd
+            case "date-desc":
+                var dd = (orderBy(data, ['delivery_date'],['desc']))
+                return dd
+            case "ID-asc":
+                var dd = (orderBy(data, ['id'],['asc']))
+                return dd
+            case "ID-desc":
+                var dd = (orderBy(data, ['id'],['desc']))
+                return dd
+    
+        }
+    }
+
+    const doFilter = () => {
+        var filtered_data = fullOrders;
+        setAltered(false)
+        if (filterVal !== "ALL") {
+        filtered_data = (filter(filtered_data, {'status': filterVal}))
+        setAltered(true)
+        }
+
+        filtered_data = doSort(filtered_data);
+        setOrders(filtered_data)
+    }
+
+
+    const doSearch = (query) => {
+        setQuery(query)
+        const query_formatted = query.toLowerCase();
+        var filtered_data = fullOrders.filter(order => {
+            var ord = ("Order #"+order.id.toString()).toLowerCase()
+            return(ord.includes(query_formatted) ||
+            order.delivery_date.toLowerCase().includes(query_formatted))
+        })
+        filtered_data = doSort(filtered_data);
+        setOrders(filtered_data);
+    }
+
 
 
     const noResults = () => {
@@ -72,20 +121,39 @@ export const OrdersScreen = () => {
     return (
         <FlatList 
             data={orders}
+            ListHeaderComponent={<OrderHeader altered={altered} sortVal={sortVal} setSortVal={setSortVal}  setFilterVal={setFilterVal} setQuery={setQuery} query={query} onChange={doSearch} />}
             ListEmptyComponent = {noResults}
             renderItem = {({ item }) => {
                 const on_press = () => {
                     navigation.navigate('OrderDetailsScreen', {order_id:item.id})
                 }
+
+                const restaurant_names = () => { //get the unique names of restaurants from the items
+                    var x = (uniq((map(item.items,'restaurant_name'))))
+                    if (x.length == 2) {
+                        return x[0] + " & " + x[1]
+                    } else {
+                        return x[0]
+                    }
+                }
+
                         return (
-                <View style={{padding:25}}>
-                    <Card onPress={on_press}>
-                        <Card.Title title={"Order #" + item.id}/>
-                        <Card.Content>
-                        <Paragraph>Placed for: {item.delivery_date}</Paragraph>
+                    <Card style={{marginVertical:10, marginHorizontal:25, borderRadius:10}} onPress={on_press}>
+                        <Card.Title style={{marginBottom:-5}} title={"Order #" + item.id}/>
+
+                        <Card.Content style={{flexDirection: "row"}}>
+                        <View style={{flex:5}}>
+                            <Paragraph style={{color:"dimgrey"}} >{restaurant_names()}</Paragraph>
+                            <Paragraph>Delivery date: {item.delivery_date}</Paragraph>
+
+                        </View>
+                        <View style={{flex:2, alignItems: "center"}}>
+                            <Paragraph style={{color:"dimgrey"}}>{item.status}</Paragraph>
+                            <Paragraph>£{Number(((item.total_pence)/100)).toFixed(2)}</Paragraph>
+                        </View>
+
                         </Card.Content>
                     </Card>
-                </View>
             ) 
             }}
             keyExtractor={(item) => item.id}

@@ -9,17 +9,30 @@ import { useNavigation } from '@react-navigation/native';
 export const SubmitOrderButton = (props) => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = React.useState(false);
-    const {fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate, cartDeliveryLocation, cartDeliveryDate} = React.useContext(AuthContext)
+    const {setTriggerOrderRefresh, triggerOrderRefresh, fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate, cartDeliveryLocation, cartDeliveryDate, } = React.useContext(AuthContext)
 
     const goToOrder = (id) => {
-        navigation.navigate("Orders")
-        navigation.navigate("OrderDetailsScreen", {order_id:id})
-
+        setTriggerOrderRefresh(!triggerOrderRefresh)
+        navigation.navigate('OrderStack', {
+            screen: 'OrderDetailsScreen',
+            params: {order_id: id},
+            initial: false
+          })
+    
     }
 
     const submitCall = () => {
+        Alert.alert("Submit Order.", "Are you sure you want to submit this order?",
+        [
+            {text: "Cancel"},
+            {text: "Confirm", onPress: submitCall2}
+        ]
+        )
+    }
+
+    const submitCall2 = () => {
         if (!(cartDeliveryLocation && cartDeliveryDate)) {
-            Alert.alert('Submit order', "Valid delivery date and location must be set before submitting an order", [
+            Alert.alert('Submit Order', "Valid delivery date and location must be set before submitting an order", [
                 { text: 'OK'},
             ]);     
             return
@@ -33,7 +46,6 @@ export const SubmitOrderButton = (props) => {
 
         
 
-        console.log(params)
         axiosInstance.post(`/checkout/submit`, params)
         .then((response) => {
             setCartDeliveryDate();
@@ -43,8 +55,8 @@ export const SubmitOrderButton = (props) => {
                 const id = response.data.order_number
                 Alert.alert('Submit order', response.data.res, [
                     { 
-                        text: 'Go To Orders',
-                        onPress: goToOrder(id)
+                        text: 'Go To Order',
+                        onPress: () => {goToOrder(id)}
                     },
                     { text: 'OK'},
                     
@@ -54,6 +66,7 @@ export const SubmitOrderButton = (props) => {
         .catch((error) => {
             fetchCartContent()
             setIsLoading(false)
+            console.log(error)
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
                 err_text = error.response.data.res;
@@ -65,9 +78,6 @@ export const SubmitOrderButton = (props) => {
     }
 
     return (
-        isLoading ?
-        <ActivityIndicator animating={true}/>
-        :
-        <Button {...props} icon={"cart-check"} onPress={submitCall}>{props.children}</Button>
+        <Button {...props} loading={isLoading} style={{borderRadius:5}} color={"green"} mode={"contained"}  icon={"cart-check"} onPress={submitCall}>{props.children}</Button>
     )
 }

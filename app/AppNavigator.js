@@ -13,19 +13,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActivityIndicator } from 'react-native-paper';
-import { VendorAbout } from './components/VendorAbout';
+import { VendorAboutScreen } from './screens/VendorAboutScreen';
 import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
 import {ChooseDeliveryLocation} from './screens/ChooseDeliveryLocation'
-// import {ChooseDeliveryDate} from './screens/ChooseDeliveryDate'
 import { OrderDetailsScreen } from './screens/OrderDetailsScreen';
 import { Alert, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import { axiosInstance } from './api';
 import { useNavigation } from '@react-navigation/native';
-// import { CommonActions } from '@react-navigation/native';
-
-
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,7 +35,6 @@ export const AppNavigator = () => {
         )
     }
 
-    console.log(`returning ${myIsLoggedIn}`)
     return(
         <NavigationContainer>
             {myIsLoggedIn ? <AppStack/> : <AuthStack/>}
@@ -49,7 +43,7 @@ export const AppNavigator = () => {
 }
 
 export const AppStack = () => {
-  const {cartBadge} = useContext(AuthContext);
+  const {cartBadge, setTriggerOrderRefresh, triggerOrderRefresh} = useContext(AuthContext);
 
   //do push notification enrollment when logged in only. 
   async function registerForPush() {
@@ -93,27 +87,35 @@ export const AppStack = () => {
   ///handle push notifications
   const nav = useNavigation();
 
-  // const handleNotification = notificationRes => {
-  //   const orderNo = notificationRes.notification.request.content.data.orderNo
-  // }
+  const handleNotification = notificationRes => {
+    const orderNo = notificationRes.notification.request.content.data.orderNo
+    setTriggerOrderRefresh(!triggerOrderRefresh)
 
-  // useEffect(() => {
-  //   Notifications.addNotificationResponseReceivedListener(handleNotification);
-  // },[])
+    nav.navigate('OrderStack', {
+      screen: 'OrderDetailsScreen',
+      params: {order_id: orderNo},
+      initial: false
+  
+    })
+  }
 
-  const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
-    if (lastNotificationResponse) {
-      const orderNo = lastNotificationResponse.notification.request.content.data.orderNo
-      console.log(orderNo)
-      nav.navigate('OrderStack', {
-        screen: 'OrderDetailsScreen',
-        params: {order_id: orderNo},
-        initial: false
+    Notifications.addNotificationResponseReceivedListener(handleNotification);
+  },[])
 
-      })
-    }
-  },[lastNotificationResponse])
+  // const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  // useEffect(() => {
+  //   if (lastNotificationResponse) {
+  //     setTriggerOrderRefresh(!triggerOrderRefresh)
+  //     const orderNo = lastNotificationResponse.notification.request.content.data.orderNo
+  //     nav.navigate('OrderStack', {
+  //       screen: 'OrderDetailsScreen',
+  //       params: {order_id: orderNo},
+  //       initial: false
+
+  //     })
+  //   }
+  // },[lastNotificationResponse])
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -166,9 +168,10 @@ export const AppStack = () => {
 
     
       <Tab.Screen
-        name="Settings" 
-        component={SettingsScreen} 
+        name="SettingsStack" 
+        component={SettingsStack} 
         options={{
+          tabBarLabel: "Settings",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="cogs" color={color} size={25} />
           )
@@ -195,7 +198,7 @@ const HomeStack = () => {
     <Stack.Navigator>
       <Stack.Screen options={{headerShown:false}} name="HomePage" component={HomeScreen} />
       <Stack.Screen name="VendorScreen" component={VendorScreen} />
-      <Stack.Screen name="About"  component={VendorAbout}/>
+      <Stack.Screen name="About"  component={VendorAboutScreen}/>
     </Stack.Navigator>
   )
 }
@@ -216,6 +219,15 @@ const OrderStack = () => {
     <Stack.Navigator>
     <Stack.Screen options={{headerShown:true}} name="Orders" component={OrdersScreen} />
     <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
+
+    </Stack.Navigator>
+  )
+}
+
+const SettingsStack = () => {
+  return(
+    <Stack.Navigator>
+    <Stack.Screen options={{headerShown:true}} name="Settings" component={SettingsScreen} />
 
     </Stack.Navigator>
   )

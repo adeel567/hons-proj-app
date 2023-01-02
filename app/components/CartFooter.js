@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Card, Paragraph, IconButton, Provider} from 'react-native-paper';
+import { Button, Card, Paragraph, IconButton, Provider, Divider} from 'react-native-paper';
 import { EmptyCartButton } from './EmptyCartButton';
 import { AuthContext } from '../context/AuthContext';
 import { View } from 'react-native';
@@ -28,16 +28,19 @@ export const CartFooter = (props) => {
     return(
         <View>
 
-            <Card>
-                <Card.Content>
-                    <Paragraph>Subtotal: {cartContent.subtotal_pence}</Paragraph>
-                    <Paragraph>Delivery Cost: {cartContent.delivery_cost_pence}</Paragraph>
-                    <Paragraph>Total: {cartContent.total_pence}</Paragraph>
+            <Card style={{marginHorizontal:25, marginTop:10, borderRadius:10}}>
+                <Card.Title title={"Cart Summary"}/>
+                <Card.Content style={{alignItems:"flex-end"}}>
+                    <Paragraph>Subtotal: £{Number(((cartContent.subtotal_pence)/100)).toFixed(2)}</Paragraph>
+                    <Paragraph>Delivery Cost: £{Number(((cartContent.delivery_cost_pence)/100)).toFixed(2)}</Paragraph>
+                    <Paragraph>Total: £{Number(((cartContent.total_pence)/100)).toFixed(2)}</Paragraph>
 
                 </Card.Content>
             </Card>
 
-            <Card style={{marginVertical:25, marginHorizontal:0}}
+            <Divider  style={{marginTop:20}}/>
+
+            <Card style={{marginHorizontal:10, marginTop:20, marginBottom:10, borderRadius:10}}
                         onPress={goToCheckout1}>
                 <Card.Title
                     title="Delivery Location"
@@ -46,7 +49,7 @@ export const CartFooter = (props) => {
                     />
             </Card>
 
-            <Card style={{marginVertical:25, marginHorizontal:0}}
+            <Card style={{marginHorizontal:10, marginTop:10, marginBottom:20, borderRadius:10}}
             onPress={openDatePickerSingle}
                 >
                 <Card.Title
@@ -56,8 +59,10 @@ export const CartFooter = (props) => {
                     />
             </Card>
 
-            <SubmitOrderButton>Submit Order</SubmitOrderButton>
-            <EmptyCartButton >Empty Cart</EmptyCartButton>
+            <View style={{marginHorizontal:50, height:100, justifyContent:"space-around"}}>
+                <SubmitOrderButton>Submit Order</SubmitOrderButton>
+                <EmptyCartButton>Empty Cart</EmptyCartButton>
+            </View>
 
 
             

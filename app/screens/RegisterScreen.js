@@ -30,8 +30,6 @@ export const RegisterScreen = () => {
             ]);
             return
         }
-        console.log(email)
-
         register(firstName,lastName,username,email,password)
 
     }

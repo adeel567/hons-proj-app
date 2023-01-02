@@ -15,16 +15,15 @@ export const ChooseDeliveryLocation = (props) => {
 
     const {setCartDeliveryLocation, cartDeliveryLocation} = React.useContext(AuthContext);
     const [region, setRegion] = React.useState({
-        longitude: cartDeliveryLocation?.delivery_longitude ? cartDeliveryLocation.delivery_longitude :  -3.1883802,
-        latitude: cartDeliveryLocation?.delivery_latitude ? cartDeliveryLocation.delivery_latitude : 55.94399411,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01
+        longitude: cartDeliveryLocation ? cartDeliveryLocation.delivery_longitude :  -3.1883802,
+        latitude: cartDeliveryLocation ? cartDeliveryLocation.delivery_latitude : 55.94399411,
+        latitudeDelta: cartDeliveryLocation ? 0.00069 : 0.01,
+        longitudeDelta: cartDeliveryLocation? 0.00069 : 0.01
     });
 
     const onRegionChange = (newRegion, {isGesture:boolean}) => {
       if (region.latitude.toFixed(thres) !== newRegion.latitude.toFixed(thres)
           || region.longitude.toFixed(thres) !== newRegion.longitude.toFixed(thres)) {
-            console.log(newRegion)
             setRegion(newRegion)
           }
     }
@@ -85,10 +84,10 @@ export const ChooseDeliveryLocation = (props) => {
             <Image style={styles.marker} source={marker} />
         </View>
         <SafeAreaView style={styles.footer}>
-            {isLoading ? 
+            {/* {isLoading ? 
             <ActivityIndicator animating={true}/>
-            :
-            <Button onPress={confirmLocation} style={styles.button}>Confirm Location</Button>}
+            : */}
+            <Button onPress={confirmLocation} mode="contained" color='green' loading={isLoading} style={styles.button}>Confirm Location</Button>
         </SafeAreaView>
         </View>
     )
@@ -666,7 +665,7 @@ const styles = StyleSheet.create({
     width: 48
     },
     footer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
     bottom: 0,
     position: 'absolute',
     width: '100%',

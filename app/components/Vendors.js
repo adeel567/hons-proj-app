@@ -82,8 +82,7 @@ export const Vendors = (props) => {
     return(
         <FlatList 
             style={{
-                marginBottom:150,
-                // backgroundColor: 'lightslategrey',
+                // marginBottom:150,
             }}
             ListHeaderComponent={<HomeHeader sortVal={sortVal} setSortVal={setSortVal} setQuery={setQuery} query={query} onChange={doSearch} />}
             data={vendors}

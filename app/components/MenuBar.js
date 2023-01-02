@@ -36,12 +36,12 @@ export const MenuBar = (props) => {
         <Menu
           visible={visible}
           onDismiss={hideSort}
-          anchor={<IconButton onPress={showSort} icon="sort" size={30}/>}>
-          <Menu.Item icon={"sort-alphabetical-ascending-variant"} onPress={() => {props.setSortVal("name-asc"), hideSort()}} title="Name (asc)" />
-          <Menu.Item icon={"sort-alphabetical-descending-variant"} onPress={() => {props.setSortVal("name-desc"), hideSort()}} title="Name (desc)" />
+          anchor={<IconButton onPress={showSort} icon="sort" size={30} color="dimgrey" />}>
+          <Menu.Item icon={"sort-alphabetical-ascending"} onPress={() => {props.setSortVal("name-asc"), hideSort()}} title="Name (asc)" />
+          <Menu.Item icon={"sort-alphabetical-descending"} onPress={() => {props.setSortVal("name-desc"), hideSort()}} title="Name (desc)" />
           <Divider/>
-          <Menu.Item icon={"sort-numeric-ascending-variant"} onPress={() => {props.setSortVal("price-asc"), hideSort()}} title="Price (asc)" />
-          <Menu.Item icon={"sort-numeric-descending-variant"} onPress={() => {props.setSortVal("price-desc"), hideSort()}} title="Price (desc)" />
+          <Menu.Item icon={"sort-numeric-ascending"} onPress={() => {props.setSortVal("price-asc"), hideSort()}} title="Price (asc)" />
+          <Menu.Item icon={"sort-numeric-descending"} onPress={() => {props.setSortVal("price-desc"), hideSort()}} title="Price (desc)" />
 
         </Menu>
       </View>

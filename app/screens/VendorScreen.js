@@ -101,7 +101,7 @@ export const VendorScreen = ({navigation,route}) => {
                         <Card.Cover source={{uri: image_url}}/>
                     </Card>
 
-                    <Card style={{marginVertical:25, marginHorizontal:0}}
+                    <Card style={{marginVertical:25, marginHorizontal:10, borderRadius:10}}
                         onPress={viewAbout}>
                         <Card.Title
                             title={vendor.name}

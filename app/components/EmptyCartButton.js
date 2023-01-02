@@ -6,11 +6,25 @@ import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native-paper';
 
+/**
+ * Empties the entire cart and tells context to refresh
+ * @param {*} props 
+ * @returns 
+ */
 export const EmptyCartButton = (props) => {
     const {fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate} = React.useContext(AuthContext)
     const [isLoading, setIsLoading] = React.useState(false);
 
     const emptyCall = () => {
+        Alert.alert("Empty Cart", "Are you sure you want to empty the cart?",
+        [
+            {text: "Confirm", onPress:emptyCall2},
+            {text: "Cancel"}
+        ]
+        )
+    }
+
+    const emptyCall2 = () => {
         setIsLoading(true)
         axiosInstance.delete(`/cart`)
         .then((response) => {
@@ -19,7 +33,7 @@ export const EmptyCartButton = (props) => {
             setIsLoading(false)
             fetchCartContent()
             if (response.status = 200) {
-                Alert.alert('Empty cart', response.data.res, [
+                Alert.alert('Empty Cart', response.data.res, [
                     { text: 'OK'},
                 ]);            }
         })
@@ -37,9 +51,9 @@ export const EmptyCartButton = (props) => {
     }
 
     return (
-        isLoading ?
-        <ActivityIndicator animating={true}/>
-        :
-        <Button {...props} color="red" icon={"delete"} onPress={emptyCall}>{props.children}</Button>
+        // isLoading ?
+        // <ActivityIndicator animating={true}/>
+        // :
+        <Button {...props} loading={isLoading} color="red"  mode={"elevated"} icon={"delete"} onPress={emptyCall}>{props.children}</Button>
     )
 }

@@ -5,7 +5,13 @@ import { axiosInstance } from '../api';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
+/**
+ * Passes all parent props to child, and adds the item ID passed to cart
+ * by using the API. Becomes loading icon while loading, and
+ * displays an alert on success / failure.
+ * @param {*} props.id id of the item to add to cart
+ * @returns button which adds item to cart
+ */
 export const AddToCartButton = (props) => {
     const navigation = useNavigation();
     const {fetchCartContent} = React.useContext(AuthContext)
@@ -42,6 +48,6 @@ export const AddToCartButton = (props) => {
     }
 
     return (
-        <Button {...props} loading={isLoading} onPress={addCall}>{props.children}</Button>
+        <Button {...props} icon={"cart-plus"} color={"darkgreen"} loading={isLoading} onPress={addCall}>{props.children}</Button>
     )
 }

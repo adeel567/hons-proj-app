@@ -14,8 +14,9 @@ export const AuthProvider = ({children}) => {
   const [myIsLoggedIn, setMyIsLoggedIn] = useState(false);
   const [cartContent, setCartContent] = useState({});
   const [cartBadge, setCartBadge] = useState(0);
-  const [cartDeliveryLocation, setCartDeliveryLocation] = useState()
-  const [cartDeliveryDate, setCartDeliveryDate] = useState()
+  const [cartDeliveryLocation, setCartDeliveryLocation] = useState();
+  const [cartDeliveryDate, setCartDeliveryDate] = useState();
+  const [triggerOrderRefresh, setTriggerOrderRefresh] = useState(false);
 
   const register = (firstname, lastname, username, email, password) => {
 
@@ -108,6 +109,12 @@ export const AuthProvider = ({children}) => {
     })
   }
 
+  const fetchOrders = async () => {
+
+  }
+
+
+
   const fetchUserInfo = () => {
     axiosInstance.get("/profile").then((response) => {
       setUserInfo(response.data);
@@ -118,8 +125,6 @@ export const AuthProvider = ({children}) => {
       console.log(`fetch profile error ${e}`);
       logout()
     })
-
-   
   }
 
   const refreshLoggedIn = () => {
@@ -167,6 +172,9 @@ export const AuthProvider = ({children}) => {
         setCartDeliveryLocation,
         cartDeliveryDate,
         setCartDeliveryDate,
+
+        triggerOrderRefresh,
+        setTriggerOrderRefresh
       }}>
       {children}
     </AuthContext.Provider>
