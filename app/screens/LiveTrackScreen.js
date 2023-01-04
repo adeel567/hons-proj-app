@@ -93,7 +93,7 @@ export const LiveTrackScreen = ({route}) => {
         <SafeAreaView style={styles.footer}>
             <Card style={{marginBottom:20}}>
                 <Card.Title title="Delivery Queue"/>
-                {trackingInfo.delivery_info.status !== "DELIVERY" || trackingInfo.delivery_info.status !== "PICKUP" ?
+                {trackingInfo.delivery_info.status == "DELIVERED" ?
                 <Card.Content style={{alignItems:"center"}}>
                     <Subheading>There is no queue information available as the status is {trackingInfo.delivery_info.status.toLowerCase()}.</Subheading>
                 </Card.Content>
