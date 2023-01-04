@@ -43,12 +43,6 @@ export const VendorAboutScreen = ({navigation, route}) => {
                         <Paragraph>{vendor.description}</Paragraph>
                     </Card.Content>
                 </Card>
-                {/* <Card style={{marginTop:25}}>
-                    <Card.Title title="Allergy Information"/>
-                    <Card.Content>
-                        <Paragraph>{vendor.description}</Paragraph>
-                    </Card.Content>
-                </Card> */}
         </View>
 
 
