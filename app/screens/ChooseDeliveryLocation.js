@@ -35,6 +35,17 @@ export const ChooseDeliveryLocation = (props) => {
 
     },[])
 
+    // React.useEffect( () => {
+    //   setisLoading(true)
+    //   axiosInstance.get("/checkout/validate/no-fly-zone")
+    //   .then((response) => {
+    //     // setNFZ(JSON.parse(response.data['geojson']))
+    //     console.log(nfz)
+    //     console.log(nfz2)
+    //   })
+    //   setisLoading(false)
+    // },[])
+
 
 
     const confirmLocation = () => {
@@ -65,6 +76,9 @@ export const ChooseDeliveryLocation = (props) => {
         })
     }
 
+    if (isLoading) {
+      return (<ActivityIndicator animating={true}/>)
+    } else {
     return (
         <View style={styles.map}>
         <MapView
@@ -90,7 +104,7 @@ export const ChooseDeliveryLocation = (props) => {
             <Button onPress={confirmLocation} mode="contained" color='green' loading={isLoading} style={styles.button}>Confirm Location</Button>
         </SafeAreaView>
         </View>
-    )
+    )}
 }
 const out = {
     "type": "FeatureCollection",

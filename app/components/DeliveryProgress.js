@@ -112,7 +112,7 @@ const style= StyleSheet.create({
 export const DeliveryProgress = (props) => {
     return (
         <Card {...props}>
-            <Card.Title title="Order Status" />
+            <Card.Title title={props.title} />
             <Card.Content style={{alignItems:"center"}}>
                 <DeliveryProgressBar status={props.status}/>
                 <Paragraph>Current order status is {props.status.toLowerCase()}.</Paragraph>

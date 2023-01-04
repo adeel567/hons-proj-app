@@ -31,7 +31,6 @@ export const LoginScreen = (props) => {
 
 
     return (
-        // <SafeAreaView>
             <View style={style.supercontainer}>
                 <Spinner visible={isLoading}/>
                 <View
@@ -50,15 +49,14 @@ export const LoginScreen = (props) => {
                             onPress={register}>
                             New here? Register
                         </Button>
-                        <View style={style.forgot}>
+                        {/* <View style={style.forgot}>
                             <Button mode="text" compact="true" >
                                 Forgot?
                             </Button>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
             </View>
-        // </SafeAreaView>
     )
 }
 export const style = StyleSheet.create({

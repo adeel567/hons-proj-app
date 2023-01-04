@@ -21,6 +21,7 @@ import { Alert, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import { axiosInstance } from './api';
 import { useNavigation } from '@react-navigation/native';
+import { LiveTrackScreen } from './screens/LiveTrackScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -208,8 +209,6 @@ const CartStack = () => {
     <Stack.Navigator>
     <Stack.Screen options={{headerShown:true}} name="Cart" component={CartScreen} />
     <Stack.Screen name="Choose Delivery Location" component={ChooseDeliveryLocation} />
-    {/* <Stack.Screen name="Choose Delivery Date" component={ChooseDeliveryDate} /> */}
-
     </Stack.Navigator>
   )
 }
@@ -219,6 +218,7 @@ const OrderStack = () => {
     <Stack.Navigator>
     <Stack.Screen options={{headerShown:true}} name="Orders" component={OrdersScreen} />
     <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
+    <Stack.Screen name="Live Track" component={LiveTrackScreen} />
 
     </Stack.Navigator>
   )
