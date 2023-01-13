@@ -13,6 +13,10 @@ export const RemoveFromCartButton = (props) => {
 
     const goToCart = () => { 
         navigation.navigate('Cart');
+        doPropFunction()
+    }
+
+    const doPropFunction = () => {
         if (props.function) {
             props.function()
         }
@@ -25,7 +29,7 @@ export const RemoveFromCartButton = (props) => {
             setIsLoading(false)
             fetchCartContent()
             if (response.status = 200) {
-                Alert.alert('Add to cart', response.data.res, [
+                Alert.alert('Remove from cart.', response.data.res, [
                     { text: "View Cart", onPress:goToCart},
                     { text: 'OK'},
                 ]);
@@ -38,7 +42,7 @@ export const RemoveFromCartButton = (props) => {
             if (error?.response?.data?.res) { 
                 err_text = error.response.data.res;
             }
-            Alert.alert('Add item to cart', err_text, [
+            Alert.alert('Remove from cart.', err_text, [
                 { text: "View Cart", onPress:goToCart},
                 { text: 'OK'},
             ])

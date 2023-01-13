@@ -33,6 +33,7 @@ export const OpenItem = (props) => {
                 { text: 'OK'},
             ]);
         })
+        hideModal() //if can't be found then just hide.
     }
 
     React.useEffect( () => {
@@ -54,7 +55,7 @@ export const OpenItem = (props) => {
     return (
         <Portal>
             <Modal visible={props.visible} onDismiss={hideModal} contentContainerStyle={containerStyle} >
-            <MenuItem item={itemDetails} cart={props.cart ? props.cart : false} navigation = {navigation} setVisible={props.setVisible}/>
+            <MenuItem item={itemDetails} usage={props.usage}  navigation = {navigation} setVisible={props.setVisible}/>
             </Modal>
          </Portal>
     );

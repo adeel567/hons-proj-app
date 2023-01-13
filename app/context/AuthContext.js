@@ -17,6 +17,8 @@ export const AuthProvider = ({children}) => {
   const [cartDeliveryLocation, setCartDeliveryLocation] = useState();
   const [cartDeliveryDate, setCartDeliveryDate] = useState();
   const [triggerOrderRefresh, setTriggerOrderRefresh] = useState(false);
+  const [cartRefreshing, setCartRefreshing] = useState(false);
+
 
   const register = (firstname, lastname, username, email, password) => {
 
@@ -95,13 +97,16 @@ export const AuthProvider = ({children}) => {
   };
 
   const fetchCartContent = async () => {
+    // setCartRefreshing(true)
     axiosInstance.get("/cart").then((response) => {
       setCartContent(response.data);
       setCartBadge(response.data.items.length)
       AsyncStorage.setItem('cartContent', JSON.stringify(response.data));
+      setCartRefreshing(false)
     })
     .catch(e => {
       console.log(`fetch cart error ${e}`);
+      setCartRefreshing(false)
     })
   }
 
@@ -160,6 +165,8 @@ export const AuthProvider = ({children}) => {
         setCartDeliveryLocation,
         cartDeliveryDate,
         setCartDeliveryDate,
+        cartRefreshing,
+        setCartRefreshing,
 
         triggerOrderRefresh,
         setTriggerOrderRefresh

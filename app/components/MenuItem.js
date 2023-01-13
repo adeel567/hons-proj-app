@@ -22,10 +22,19 @@ export const MenuItem = (props) => {
             <Paragraph>{props.item.description}</Paragraph>
             <Subheading>£{Number(((props.item.pence)/100)).toFixed(2)}</Subheading>
         </Card.Content>
-        {(!(props.cart)) ?
-        <Card.Actions style={{alignSelf: "center"}} >
-            <AddToCartButton function={hideModal} color="goldenrod" id={props.item.id} navigation={props.navigation}>Add to cart</AddToCartButton>
-        </Card.Actions>
+
+        {(props.usage !== "cart")
+            ?
+            (props.usage ==="order")
+                ? 
+                    <Card.Actions style={{alignSelf: "center"}} >
+                        < AddToCartButton function={hideModal} color="goldenrod" id={props.item.id} navigation={props.navigation}>Add to cart</AddToCartButton>
+                    </Card.Actions>
+                :
+                    <Card.Actions style={{alignSelf: "center"}} >
+                        <AddToCartButton color="goldenrod" id={props.item.id} navigation={props.navigation}>Add to cart</AddToCartButton>
+                    </Card.Actions>
+            
         :
         <Card.Actions style={{alignSelf: "center"}}>
             <AddToCartButton function={hideModal} id={props.item.id} navigation={props.navigation}>Add another</AddToCartButton>

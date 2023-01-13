@@ -19,6 +19,10 @@ export const AddToCartButton = (props) => {
 
     const goToCart = () => { 
         navigation.navigate('Cart');
+        doPropFunction()
+    }
+
+    const doPropFunction = () => {
         if (props.function) {
             props.function()
         }

@@ -64,7 +64,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
 
     return (
             <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadOrderData}/>}>
-            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} cart={false}/>
+            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} usage={"order"}/>
 
             <DeliveryProgress title={"Status"} status={orderInfo.status} delivery_date={orderInfo.delivery_date} style={{marginTop:20, marginBottom:10, marginHorizontal:10, borderRadius:10}}/>
 

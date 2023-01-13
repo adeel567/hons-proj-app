@@ -121,7 +121,7 @@ export const VendorScreen = ({navigation,route}) => {
                 ListEmptyComponent = {noResults}
                 renderItem = {({ item }) => {
                 return (
-                    <MenuItem item={item} navigation={navigation}/>
+                    <MenuItem item={item} navigation={navigation} usage={"vendor"}/>
                 ) 
                 }}
                 keyExtractor={item => item.id}

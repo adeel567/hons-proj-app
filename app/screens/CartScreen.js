@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import { Button, Card, Divider, IconButton, Modal, Paragraph, Portal, Provider, Subheading, Text, Title } from 'react-native-paper';
+import { ActivityIndicator, Button, Card, Divider, IconButton, Modal, Paragraph, Portal, Provider, Subheading, Text, Title } from 'react-native-paper';
 import { AuthContext } from '../context/AuthContext';
 import { Alert, FlatList, RefreshControl, View } from 'react-native';
 import { AddToCartButton } from '../components/AddToCartButton';
 import { RemoveFromCartButton } from '../components/RemoveFromCartButton';
 import { CartFooter } from '../components/CartFooter';
 import { OpenItem } from '../components/OpenItem';
+import { useNavigation } from '@react-navigation/native';
 
 export const CartScreen = () => {
-    const {cartContent, fetchCartContent, cartDeliveryDate, cartDeliveryLocation, isLoading} = React.useContext(AuthContext)
+    const navigation = useNavigation()
+    const {cartContent, fetchCartContent, cartDeliveryDate, cartDeliveryLocation, isLoading, cartRefreshing} = React.useContext(AuthContext)
     const [itemVisible, setItemVisible] = React.useState();
     const [itemVisibleID, setItemVisibleID] = React.useState();
 
@@ -31,13 +33,13 @@ export const CartScreen = () => {
         )
     }
 
-    if (isLoading) {
+    if (isLoading || cartRefreshing) {
         return (<ActivityIndicator style={{padding:25}} animating={true}/>)
     }
 
     return (
         <View>
-            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} cart={true}/>
+            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} usage={"cart"}/>
         <FlatList 
             ListHeaderComponent=
             {
@@ -56,8 +58,8 @@ export const CartScreen = () => {
                             <Paragraph>£{Number(((item.pence)/100)).toFixed(2)}</Paragraph>
                         </Card.Content>
                         <Card.Actions style={{marginTop:-39}}>
-                            <AddToCartButton id={item.id}>Add another</AddToCartButton>
-                            <RemoveFromCartButton id={item.id}>Remove</RemoveFromCartButton>
+                            <AddToCartButton navigation={navigation} id={item.id}>Add another</AddToCartButton>
+                            <RemoveFromCartButton navigation={navigation} id={item.id}>Remove</RemoveFromCartButton>
                         </Card.Actions>
                     </Card>
                 </View>
