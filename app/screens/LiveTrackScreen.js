@@ -6,6 +6,7 @@ import MapView, { Geojson, Marker } from 'react-native-maps';
 import drone from '../../assets/drone.png'
 import shop from '../../assets/shop.png'
 import { axiosInstance } from '../api';
+import { AuthContext } from '../context/AuthContext';
 
 
 export const LiveTrackScreen = ({route}) => {
@@ -16,6 +17,8 @@ export const LiveTrackScreen = ({route}) => {
     const [trackingInfo, setTrackingInfo] = React.useState();
     const [refreshTracking, setRefreshTracking] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(true);
+    const {triggerOrderRefresh} = React.useContext(AuthContext);
+
 
     const loadTrackingData = () => {
         setIsLoading(true)
@@ -45,7 +48,7 @@ export const LiveTrackScreen = ({route}) => {
 
     React.useEffect(() => {
         loadTrackingData() //refresh on first load
-    },[refreshTracking])
+    },[refreshTracking,triggerOrderRefresh])
 
     React.useEffect( () => {
         trackable ? navigation.setOptions({headerTitle: "Live Track Order #" + orderNo}) : navigation.setOptions({headerTitle: "Delivery Location #" + orderNo})

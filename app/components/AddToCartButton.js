@@ -13,12 +13,15 @@ import { useNavigation } from '@react-navigation/native';
  * @returns button which adds item to cart
  */
 export const AddToCartButton = (props) => {
-    const navigation = useNavigation();
+    const navigation = props.navigation
     const {fetchCartContent} = React.useContext(AuthContext)
     const [isLoading, setIsLoading] = React.useState(false);
 
     const goToCart = () => { 
         navigation.navigate('Cart');
+        if (props.function) {
+            props.function()
+        }
     }
 
     const addCall = () => {
@@ -31,7 +34,10 @@ export const AddToCartButton = (props) => {
                 Alert.alert('Add to cart.', response.data.res, [
                     { text: "View Cart", onPress:goToCart},
                     { text: 'OK'},
-                ]);            }
+                ]);
+            }
+
+
         })
         .catch((error) => {
             setIsLoading(false)

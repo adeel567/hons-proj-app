@@ -11,7 +11,7 @@ import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 
 export const CartFooter = (props) => {
-    const {cartContent, isLoading, cartDeliveryDate, setCartDeliveryDate} = React.useContext(AuthContext)
+    const {cartContent, isLoading, setCartDeliveryDate} = React.useContext(AuthContext)
     const navigation = useNavigation();
 
     const pickLocation = () => { 

@@ -1,12 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Divider, Text, Avatar, Title, List, Button } from 'react-native-paper';
+import { Divider, Text, Avatar, Title, List, Button, IconButton } from 'react-native-paper';
 import { View, StyleSheet, Platform} from 'react-native';
 import {AuthContext} from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 
 export const SettingsScreen = () => {
-    const {userInfo, logout, myIsLoggedIn, refreshCache} = useContext(AuthContext);
+    const navigation = useNavigation();
+    const {userInfo, myIsLoggedIn, refreshCache, logout} = useContext(AuthContext);
 
+    const go_changePass = () => {
+        navigation.navigate("Change Password")
+
+    }
 
     return (
         <View>
@@ -17,11 +23,11 @@ export const SettingsScreen = () => {
             <List.Item title="Email:" description={userInfo.email}/>
 
         </List.Section>
-        {/* <Button onPress={refreshX}>Test</Button> */}
-        {/* <List.Section title={"Account"} titleStyle={style.section_header}> */}
-            <Button icon={"logout"} style={{marginHorizontal:75}} color='red' onPress={logout}>logout</Button>
-        {/* </List.Section> */}
+        <List.Section title="Account" titleStyle={style.section_header}>
+            <List.Item title="Change Password" onPress={go_changePass} right={(props) => <IconButton {...props} icon="chevron-right"/>}/>
 
+        </List.Section>
+            <Button icon={"logout"} style={{marginHorizontal:75}} color='red' onPress={logout}>logout</Button>
         </View>
     )
 }

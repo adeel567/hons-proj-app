@@ -22,6 +22,7 @@ import * as Device from 'expo-device';
 import { axiosInstance } from './api';
 import { useNavigation } from '@react-navigation/native';
 import { LiveTrackScreen } from './screens/LiveTrackScreen';
+import { ChangePasswordScreen } from './screens/ChangePasswordScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -71,7 +72,7 @@ export const AppStack = () => {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    console.log("Token: " + token);
     const params = {
       "push_token": token
     }
@@ -90,38 +91,28 @@ export const AppStack = () => {
 
   const handleNotification = notificationRes => {
     const orderNo = notificationRes.notification.request.content.data.orderNo
-    setTriggerOrderRefresh(!triggerOrderRefresh)
 
-    nav.navigate('OrderStack', {
-      screen: 'OrderDetailsScreen',
-      params: {order_id: orderNo},
-      initial: false
-  
-    })
+    setTimeout(doNavigate,100);
+
+    function doNavigate() {
+      nav.navigate('OrderStack', {
+        screen: 'OrderDetailsScreen',
+        params: { order_id: orderNo },
+        initial: false
+      });
+    }
   }
 
   const handleNotification2 = notificationRes => {
-    setTriggerOrderRefresh(!triggerOrderRefresh)
+    //Trigger the screens with order to refresh on change of notification
+    setTriggerOrderRefresh(true)
+    setTriggerOrderRefresh(false)
   }
 
   useEffect(() => {
     Notifications.addNotificationResponseReceivedListener(handleNotification);
     Notifications.addNotificationReceivedListener(handleNotification2);
   },[])
-
-  // const lastNotificationResponse = Notifications.useLastNotificationResponse();
-  // useEffect(() => {
-  //   if (lastNotificationResponse) {
-  //     setTriggerOrderRefresh(!triggerOrderRefresh)
-  //     const orderNo = lastNotificationResponse.notification.request.content.data.orderNo
-  //     nav.navigate('OrderStack', {
-  //       screen: 'OrderDetailsScreen',
-  //       params: {order_id: orderNo},
-  //       initial: false
-
-  //     })
-  //   }
-  // },[lastNotificationResponse])
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -233,7 +224,7 @@ const SettingsStack = () => {
   return(
     <Stack.Navigator>
     <Stack.Screen options={{headerShown:true}} name="Settings" component={SettingsScreen} />
-
+    <Stack.Screen options={{headerShown:true}} name="Change Password" component={ChangePasswordScreen}/>
     </Stack.Navigator>
   )
 }

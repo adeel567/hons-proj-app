@@ -81,6 +81,7 @@ export const AuthProvider = ({children}) => {
   };
 
   const logout = () => {
+    console.log("logging out...")
     axiosInstance.delete("/profile/push-token") //remove push token when logged out.
     .then( () => {
       clearAuthTokens().then(setMyIsLoggedIn(false))
@@ -93,26 +94,21 @@ export const AuthProvider = ({children}) => {
 
   };
 
-
-
   const fetchCartContent = async () => {
     axiosInstance.get("/cart").then((response) => {
       setCartContent(response.data);
       setCartBadge(response.data.items.length)
       AsyncStorage.setItem('cartContent', JSON.stringify(response.data));
-      console.log(response.data)
     })
     .catch(e => {
       console.log(`fetch cart error ${e}`);
     })
   }
 
-  
   const fetchUserInfo = () => {
     axiosInstance.get("/profile").then((response) => {
       setUserInfo(response.data);
       AsyncStorage.setItem('userInfo', JSON.stringify(response.data));
-      console.log(response.data)
     })
     .catch(e => {
       console.log(`fetch profile error ${e}`);

@@ -6,8 +6,7 @@ import { axiosInstance } from '../api';
 import { DeliveryProgress } from '../components/DeliveryProgress';
 import { RequestOrderCancellation } from '../components/RequestOrderCancellation';
 import { AuthContext } from '../context/AuthContext';
-import {filter, orderBy, uniq, map}  from 'lodash';
-import MapView, { Marker } from 'react-native-maps';
+import { OpenItem } from '../components/OpenItem';
 
 
 export const OrderDetailsScreen = ({navigation,route}) => {
@@ -16,6 +15,14 @@ export const OrderDetailsScreen = ({navigation,route}) => {
     const [loading, setLoading] = React.useState("false");
     const {triggerOrderRefresh, setTriggerOrderRefresh} = React.useContext(AuthContext)
     const [refreshing, setRefreshing] = React.useState(false);
+    const [itemVisible, setItemVisible] = React.useState();
+    const [itemVisibleID, setItemVisibleID] = React.useState();
+
+
+    const openModal = (id) => {
+        setItemVisibleID(id)
+        setItemVisible(true)
+    };
 
     const loadOrderData = () => {
         setLoading(true)
@@ -57,6 +64,8 @@ export const OrderDetailsScreen = ({navigation,route}) => {
 
     return (
             <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadOrderData}/>}>
+            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} cart={false}/>
+
             <DeliveryProgress title={"Status"} status={orderInfo.status} delivery_date={orderInfo.delivery_date} style={{marginTop:20, marginBottom:10, marginHorizontal:10, borderRadius:10}}/>
 
             {orderInfo.trackable ?
@@ -90,6 +99,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
                             orderInfo.items.map( (item,index) => {
                                 return(
                                     <List.Item
+                                        onPress={() => {openModal(item.id)}}
                                         key={index}
                                         style={{marginLeft:-10}}
                                         title = {item.name}
@@ -109,7 +119,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
                             />
                         <List.Item
                             style={{marginBottom:-20,marginLeft:-10}}
-                            title = "Delivery cost:"
+                            title = "Delivery Cost:"
                             right= {props => <Text style={{marginTop:8}}>{"£" + Number(((orderInfo.delivery_pence)/100)).toFixed(2)}</Text>}
                             />
                         <List.Item

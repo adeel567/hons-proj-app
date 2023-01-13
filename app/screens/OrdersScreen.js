@@ -59,13 +59,7 @@ export const OrdersScreen = () => {
 
     React.useEffect( () => {
         doFilter() //do when filter value changes
-    }, [filterVal])
-
-    // useFocusEffect( //refresh on each look
-    //     React.useCallback(() => {
-    //         loadOrderData()
-    //     },[]))
-    
+    }, [filterVal])    
 
     const doSort = (data) => {
         switch(sortVal) {

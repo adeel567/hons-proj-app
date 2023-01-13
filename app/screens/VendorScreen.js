@@ -121,7 +121,7 @@ export const VendorScreen = ({navigation,route}) => {
                 ListEmptyComponent = {noResults}
                 renderItem = {({ item }) => {
                 return (
-                    <MenuItem item={item} image={BASE_URL.concat(item.image)}/>
+                    <MenuItem item={item} navigation={navigation}/>
                 ) 
                 }}
                 keyExtractor={item => item.id}
