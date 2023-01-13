@@ -100,8 +100,13 @@ export const AppStack = () => {
     })
   }
 
+  const handleNotification2 = notificationRes => {
+    setTriggerOrderRefresh(!triggerOrderRefresh)
+  }
+
   useEffect(() => {
     Notifications.addNotificationResponseReceivedListener(handleNotification);
+    Notifications.addNotificationReceivedListener(handleNotification2);
   },[])
 
   // const lastNotificationResponse = Notifications.useLastNotificationResponse();

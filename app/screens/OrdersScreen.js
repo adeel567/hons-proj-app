@@ -7,6 +7,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { OrderHeader } from '../components/OrderHeader';
 import {filter, orderBy, uniq, map}  from 'lodash';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export const OrdersScreen = () => {
@@ -59,6 +60,12 @@ export const OrdersScreen = () => {
     React.useEffect( () => {
         doFilter() //do when filter value changes
     }, [filterVal])
+
+    // useFocusEffect( //refresh on each look
+    //     React.useCallback(() => {
+    //         loadOrderData()
+    //     },[]))
+    
 
     const doSort = (data) => {
         switch(sortVal) {
@@ -129,7 +136,7 @@ export const OrdersScreen = () => {
                 }
 
                 const restaurant_names = () => { //get the unique names of restaurants from the items
-                    var x = (uniq((map(item.items,'restaurant_name'))))
+                    var x = (map(item.pickups,'name'))
                     if (x.length == 2) {
                         return x[0] + " & " + x[1]
                     } else {

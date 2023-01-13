@@ -62,7 +62,6 @@ export const AuthProvider = ({children}) => {
         })
         .then(() => {
           refreshCache();
-          console.log("token: " + response.data.access);
           setMyIsLoggedIn(true);
         })
     })
@@ -82,7 +81,6 @@ export const AuthProvider = ({children}) => {
   };
 
   const logout = () => {
-    console.log("logging out..")
     axiosInstance.delete("/profile/push-token") //remove push token when logged out.
     .then( () => {
       clearAuthTokens().then(setMyIsLoggedIn(false))
@@ -109,12 +107,7 @@ export const AuthProvider = ({children}) => {
     })
   }
 
-  const fetchOrders = async () => {
-
-  }
-
-
-
+  
   const fetchUserInfo = () => {
     axiosInstance.get("/profile").then((response) => {
       setUserInfo(response.data);
@@ -131,7 +124,6 @@ export const AuthProvider = ({children}) => {
     setIsLoading(true)
     isLoggedIn().then((val) => {
       setMyIsLoggedIn(val)
-      console.log(`EEEEE ${val}`)
       if (val) {
         refreshCache();
       }

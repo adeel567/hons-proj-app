@@ -29,6 +29,10 @@ export const LoginScreen = (props) => {
         }
     };
 
+    const on_forgot = () => {
+        Alert.alert('Forgot login.', "Please email app@adeel.uk to reset your login details.")
+    }
+
 
     return (
             <View style={style.supercontainer}>
@@ -49,11 +53,11 @@ export const LoginScreen = (props) => {
                             onPress={register}>
                             New here? Register
                         </Button>
-                        {/* <View style={style.forgot}>
-                            <Button mode="text" compact="true" >
+                        <View style={style.forgot}>
+                            <Button mode="text" compact="true" onPress={on_forgot} >
                                 Forgot?
                             </Button>
-                        </View> */}
+                        </View>
                     </View>
                 </View>
             </View>

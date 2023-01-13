@@ -32,7 +32,7 @@ export const SubmitOrderButton = (props) => {
 
     const submitCall2 = () => {
         if (!(cartDeliveryLocation && cartDeliveryDate)) {
-            Alert.alert('Submit Order', "Valid delivery date and location must be set before submitting an order", [
+            Alert.alert('Submit Order.', "A valid delivery date and location must be set before submitting an order.", [
                 { text: 'OK'},
             ]);     
             return

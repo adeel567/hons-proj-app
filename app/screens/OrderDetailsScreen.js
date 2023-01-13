@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Alert, RefreshControl, ScrollView, View } from 'react-native';
-import { ActivityIndicator, Card, IconButton, Paragraph } from 'react-native-paper';
+import { ActivityIndicator, Card, Divider, IconButton, List, Paragraph, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { axiosInstance } from '../api';
 import { DeliveryProgress } from '../components/DeliveryProgress';
@@ -17,7 +17,6 @@ export const OrderDetailsScreen = ({navigation,route}) => {
     const {triggerOrderRefresh, setTriggerOrderRefresh} = React.useContext(AuthContext)
     const [refreshing, setRefreshing] = React.useState(false);
 
-
     const loadOrderData = () => {
         setLoading(true)
 
@@ -25,7 +24,6 @@ export const OrderDetailsScreen = ({navigation,route}) => {
         .then((response) => {
             setOrderInfo(response.data)
             setLoading(false)
-            console.log(response.data)
         })
         .catch(e => {
             console.log(e)
@@ -43,7 +41,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
 
     React.useEffect(() => {
         loadOrderData() //refresh on first load
-    },[triggerOrderRefresh])
+    },[triggerOrderRefresh,route])
 
     React.useEffect( () => {
         navigation.setOptions({headerTitle: "Order #" + orderNo})
@@ -53,23 +51,13 @@ export const OrderDetailsScreen = ({navigation,route}) => {
         return (<ActivityIndicator animating={true}/>)
     }
 
-    const restaurant_names = () => { //get the unique names of restaurants from the items
-        var x = (uniq((map(orderInfo.items,'restaurant_name'))))
-        if (x.length == 2) {
-            return x[0] + " & " + x[1]
-        } else {
-            return x[0]
-        }
-    }
-
     const navigate_livetrack = () => {
-        navigation.navigate("Live Track", {orderNo:orderNo})
+        navigation.navigate("Live Track", {orderNo:orderNo, orderInfo: orderInfo})
     }
-
 
     return (
             <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadOrderData}/>}>
-            <DeliveryProgress title={"Status"} status={orderInfo.status} style={{marginTop:20, marginBottom:10, marginHorizontal:10, borderRadius:10}}/>
+            <DeliveryProgress title={"Status"} status={orderInfo.status} delivery_date={orderInfo.delivery_date} style={{marginTop:20, marginBottom:10, marginHorizontal:10, borderRadius:10}}/>
 
             {orderInfo.trackable ?
                 <Card 
@@ -94,24 +82,43 @@ export const OrderDetailsScreen = ({navigation,route}) => {
             }
 
             <Card style={{marginVertical:10, marginHorizontal:10, borderRadius:10}}>
-                <Card.Title  title="Overview"/>
-                <Card.Content>
-                    <Paragraph>From: {restaurant_names()}</Paragraph>
-                    <Paragraph>Delivery Date: {orderInfo.delivery_date}</Paragraph>
-                    <Paragraph>Subtotal: £{Number(((orderInfo.subtotal_pence)/100)).toFixed(2)}</Paragraph>
-                    <Paragraph>Delivery Cost: £{Number(((orderInfo.delivery_pence)/100)).toFixed(2)}</Paragraph>
-                    <Paragraph>Total: £{Number(((orderInfo.total_pence)/100)).toFixed(2)}</Paragraph>
-
-                </Card.Content>
-            </Card>
-
-
-            <Card style={{marginVertical:10, marginHorizontal:10, borderRadius:10}}>
                     <Card.Title
                         title="Contents"
-                        subtitle="Tap to view the contents of the order."
-                        right={(props) => <IconButton {...props} icon="chevron-right"/>}
                         />
+                    <Card.Content style={{marginBottom:10, marginTop:-15}}>
+                        {
+                            orderInfo.items.map( (item,index) => {
+                                return(
+                                    <List.Item
+                                        key={index}
+                                        style={{marginLeft:-10}}
+                                        title = {item.name}
+                                        description = {"Sold by " + item.restaurant_name}
+                                        descriptionStyle = {{fontSize:12}}
+                                        right= {props => <Text style={{marginTop:8}}>{"£" + Number(((item.pence)/100)).toFixed(2)}</Text>}
+                                        />
+                                )
+                            }
+                            )
+                        }
+                        <Divider/>
+                        <List.Item
+                            style={{marginBottom:-20,marginLeft:-10}}
+                            title = "Subtotal:"
+                            right= {props => <Text style={{marginTop:8}}>{"£" + Number(((orderInfo.subtotal_pence)/100)).toFixed(2)}</Text>}
+                            />
+                        <List.Item
+                            style={{marginBottom:-20,marginLeft:-10}}
+                            title = "Delivery cost:"
+                            right= {props => <Text style={{marginTop:8}}>{"£" + Number(((orderInfo.delivery_pence)/100)).toFixed(2)}</Text>}
+                            />
+                        <List.Item
+                            style={{marginBottom:-20,marginLeft:-10}}
+                            title = "Total:"
+                            right= {props => <Text style={{marginTop:8}}>{"£" + Number(((orderInfo.total_pence)/100)).toFixed(2)}</Text>}
+                            />
+
+                    </Card.Content>
                     </Card>
             
 

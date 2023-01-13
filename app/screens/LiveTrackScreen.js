@@ -9,20 +9,26 @@ import { axiosInstance } from '../api';
 
 
 export const LiveTrackScreen = ({route}) => {
+    const orderInfo = route.params.orderInfo
     const orderNo = route.params.orderNo
     const navigation = useNavigation();
+    const [trackable, setTrackable] = React.useState(orderInfo.trackable);
     const [trackingInfo, setTrackingInfo] = React.useState();
     const [refreshTracking, setRefreshTracking] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(true);
 
     const loadTrackingData = () => {
         setIsLoading(true)
-
         axiosInstance.get("/track/"+orderNo)
         .then((response) => {
-            setTrackingInfo(response.data)
-            console.log(response.data)
-            setIsLoading(false)
+            if (response.status === 200) { //if tracking is available
+                setTrackable(true)
+                setTrackingInfo(response.data)
+                setIsLoading(false)
+            } else {
+                setTrackable(false)
+                setIsLoading(false)
+            }
         })
         .catch(e => {
             console.log(e)
@@ -35,7 +41,6 @@ export const LiveTrackScreen = ({route}) => {
                 { text: 'OK'},
             ]);
             })
-        return
     }
 
     React.useEffect(() => {
@@ -43,8 +48,8 @@ export const LiveTrackScreen = ({route}) => {
     },[refreshTracking])
 
     React.useEffect( () => {
-        navigation.setOptions({headerTitle: "Live Track Order #" + orderNo})
-    },[])
+        trackable ? navigation.setOptions({headerTitle: "Live Track Order #" + orderNo}) : navigation.setOptions({headerTitle: "Delivery Location #" + orderNo})
+    },[trackable])
 
     const onRefresh = () => {
         setRefreshTracking(!refreshTracking)
@@ -54,31 +59,34 @@ export const LiveTrackScreen = ({route}) => {
         return <ActivityIndicator animating={true}/>
     }
 
+
     return (
         <View style={styles.map}>
         <MapView
-            mapPadding={{bottom:150}}
+            mapPadding={trackable ? {bottom:250} : {bottom:0}}
             style={styles.map}
             initialRegion= {{
-                latitude:trackingInfo ? trackingInfo.delivery_info.latitude-0.001 : 1,
-                longitude:trackingInfo ? trackingInfo.delivery_info.longitude : 1,
+                latitude: trackable ? orderInfo.delivery_latitude -0.001 : orderInfo.delivery_latitude,
+                longitude: orderInfo.delivery_longitude,
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01
             }}
             showsUserLocation={true}
         >
+            {(trackable && trackingInfo.delivery_info.status !== "DELIVERED") ? //drone is shown when not delivered and is trackable
             <Marker
                 title={"Drone"}
                 icon={drone}
                 description={"Making delivery " + trackingInfo.queue.current_delivery}
                 coordinate={{longitude:trackingInfo.drone_location.longitude,latitude:trackingInfo.drone_location.latitude}}
             />
+            : <></>}
 
-            {trackingInfo.pickups.map((pickup,index) => (
+            {orderInfo.pickups.map((pickup,index) => (
                     (<Marker
                         title="Pickup"
                         key={index}
-                        // icon={shop}
+                        icon={shop}
                         description={pickup.name}
                         coordinate={{longitude:pickup.longitude ,latitude:pickup.latitude}}
                     />)
@@ -86,28 +94,34 @@ export const LiveTrackScreen = ({route}) => {
 
             <Marker
                 title={"Delivery Location"}
-                coordinate={{longitude:trackingInfo.delivery_info.longitude,latitude:trackingInfo.delivery_info.latitude}}
+                coordinate={{longitude:orderInfo.delivery_longitude,latitude:orderInfo.delivery_latitude}}
                 />
         </MapView>
 
         <SafeAreaView style={styles.footer}>
+            {trackable ?
+            <View>
             <Card style={{marginBottom:20}}>
                 <Card.Title title="Delivery Queue"/>
-                {trackingInfo.delivery_info.status == "DELIVERED" ?
+                {trackingInfo.delivery_info.status === "DELIVERED" ?
                 <Card.Content style={{alignItems:"center"}}>
-                    <Subheading>There is no queue information available as the status is {trackingInfo.delivery_info.status.toLowerCase()}.</Subheading>
+                    <Subheading>No tracking info as order is {trackingInfo.delivery_info.status.toLowerCase()}.</Subheading>
                 </Card.Content>
                 :
                 <Card.Content style={{alignItems:"center"}}>
                     {trackingInfo.delivery_info.status==="PICKUP" || trackingInfo.delivery_info.status==="DELIVERY"
                         ?
-                        <Subheading style={{"fontWeight": "bold"}}>Your order is being delivered! Head outside.</Subheading>
+                        <View style={{alignItems:"center"}}>
+                            <Subheading  style={{"fontWeight": "bold"}}>Your order is on its way!</Subheading>
+                            <Subheading>Its status is {trackingInfo.delivery_info.status.toLowerCase()}.</Subheading>
+                            <Subheading>Head outside soon to retrieve it.</Subheading>
+                        </View>
                         :
                         <View style={{alignItems:"center"}}>
-                        <Subheading style={{"fontWeight": "bold"}}>There are {trackingInfo.queue.relative_position} orders infront of you.</Subheading>
-                        <Paragraph>Your lunch is delivery {trackingInfo.queue.overall_position}.</Paragraph>
-                        <Paragraph>The drone is currently completing delivery {trackingInfo.queue.current_delivery}.</Paragraph>
-                        <Paragraph>There are {trackingInfo.queue.length} orders to deliver today.</Paragraph>
+                            <Subheading style={{"fontWeight": "bold"}}>There are {trackingInfo.queue.relative_position} orders infront of you.</Subheading>
+                            <Paragraph>Your lunch is delivery {trackingInfo.queue.overall_position}.</Paragraph>
+                            <Paragraph>The drone is currently completing delivery {trackingInfo.queue.current_delivery}.</Paragraph>
+                            <Paragraph>There are {trackingInfo.queue.length} orders to deliver today.</Paragraph>
                         </View>
 
                     }
@@ -115,6 +129,8 @@ export const LiveTrackScreen = ({route}) => {
                 } 
             </Card>
             <Button icon={"refresh"} onPress={onRefresh} mode="contained" color='blue' loading={isLoading} style={styles.button}>Refresh</Button>
+            </View>
+            : <></>}
         </SafeAreaView>
         </View>
     )

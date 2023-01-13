@@ -1,33 +1,17 @@
 import React, { useContext } from 'react';
 import { Button, Card, Divider, IconButton, Paragraph, Provider, Subheading, Title } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthContext } from '../context/AuthContext';
-import { axiosInstance } from '../api';
 import { Alert, FlatList, RefreshControl, View } from 'react-native';
 import { AddToCartButton } from '../components/AddToCartButton';
 import { RemoveFromCartButton } from '../components/RemoveFromCartButton';
-import { EmptyCartButton } from '../components/EmptyCartButton';
-import { BASE_URL } from '../api';
-import { MenuItem } from '../components/MenuItem';
 import { CartFooter } from '../components/CartFooter';
-import DatePicker from 'react-native-neat-date-picker';
 
 export const CartScreen = () => {
-    const {cartContent, fetchCartContent, isLoading, cartDeliveryLocation, cartDeliveryDate, setCartDeliveryLocation, setCartDeliveryDate} = React.useContext(AuthContext)
-    const [showDatePickerSingle, setShowDatePickerSingle] = React.useState(false)
+    const {cartContent, fetchCartContent, isLoading} = React.useContext(AuthContext)
 
     React.useEffect(() => {
         fetchCartContent() //refresh on first load
     },[])
-
-    const onCancelSingle = () => {
-        setShowDatePickerSingle(false)
-      }
-    
-    const onConfirmSingle = (output) => {
-        setShowDatePickerSingle(false)
-        setCartDeliveryDate(output.dateString)
-      }
 
 
     const noResults = () => {
@@ -45,13 +29,6 @@ export const CartScreen = () => {
 
     return (
         <View>
-            <DatePicker
-                    isVisible={showDatePickerSingle}
-                    mode={'single'}
-                    onCancel={onCancelSingle}
-                    onConfirm={onConfirmSingle}
-                    minDate={new Date()}
-                />
         <FlatList 
             ListHeaderComponent=
             {
@@ -88,11 +65,7 @@ export const CartScreen = () => {
                     return (
                     <View>
                         <CartFooter 
-                        deliveryDate={cartDeliveryDate} 
-                        deliveryLocation={cartDeliveryLocation}
-                        // setDeliveryLocation={setDeliveryLocation} 
-                        showDatePickerSingle={showDatePickerSingle}
-                        setShowDatePickerSingle={setShowDatePickerSingle}/>
+                        />
                     </View>
                     )
                 }
