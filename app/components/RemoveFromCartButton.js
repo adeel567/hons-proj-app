@@ -26,8 +26,6 @@ export const RemoveFromCartButton = (props) => {
         setIsLoading(true)
         axiosInstance.delete(`/cart/item/${props.id}`)
         .then((response) => {
-            setIsLoading(false)
-            fetchCartContent()
             if (response.status = 200) {
                 Alert.alert('Remove from cart.', response.data.res, [
                     { text: "View Cart", onPress:goToCart},
@@ -36,8 +34,6 @@ export const RemoveFromCartButton = (props) => {
             }
         })
         .catch((error) => {
-            setIsLoading(false)
-            fetchCartContent()
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
                 err_text = error.response.data.res;
@@ -47,6 +43,7 @@ export const RemoveFromCartButton = (props) => {
                 { text: 'OK'},
             ])
         })
+        .finally(()=> {setIsLoading(false), fetchCartContent()})
     }
 
     return (

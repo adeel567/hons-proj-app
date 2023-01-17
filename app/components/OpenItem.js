@@ -16,15 +16,12 @@ export const OpenItem = (props) => {
 
     const fetchItem = () => {
         setIsLoading(true)
-
         axiosInstance.get("/item/" + props.itemID)
         .then((response) => {
             setItemDetails(response.data)
-            setIsLoading(false)
         })
         .catch(e => {
             console.log(e)
-            setIsLoading(false)
             Alert.alert('An error occurred :(', "Issue connecting to ILP API, please try again later.", [
                 { 
                     text: 'Try Again',
@@ -32,8 +29,9 @@ export const OpenItem = (props) => {
                 },
                 { text: 'OK'},
             ]);
+            hideModal() //if can't be found then just hide.
         })
-        hideModal() //if can't be found then just hide.
+        .finally(() => {setIsLoading(false)})
     }
 
     React.useEffect( () => {

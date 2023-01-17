@@ -30,16 +30,12 @@ export const EmptyCartButton = (props) => {
         .then((response) => {
             setCartDeliveryLocation()
             setCartDeliveryDate()
-            setIsLoading(false)
-            fetchCartContent()
             if (response.status = 200) {
                 Alert.alert('Empty Cart', response.data.res, [
                     { text: 'OK'},
                 ]);            }
         })
         .catch((error) => {
-            setIsLoading(false)
-            fetchCartContent()
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
                 err_text = error.response.data.res;
@@ -48,6 +44,8 @@ export const EmptyCartButton = (props) => {
                 { text: 'OK'},
             ])
         })
+        .finally(() => {setIsLoading(false), fetchCartContent()})
+
     }
 
     return (

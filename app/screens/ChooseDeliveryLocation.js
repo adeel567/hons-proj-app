@@ -56,8 +56,6 @@ export const ChooseDeliveryLocation = (props) => {
         .then((response) => {
             if (response.data.status = 200) {
                 setCartDeliveryLocation(params)
-                // navigation.navigate("Choose Delivery Date")
-                setisLoading(false)
                 navigation.goBack()
             }
         })
@@ -67,11 +65,12 @@ export const ChooseDeliveryLocation = (props) => {
             if (error?.response?.data?.res) { //if error from API exists, return that message instead.
                 err_text = error.response.data.res[0]
             }
-            setisLoading(false)
             Alert.alert('Issue with the chosen location.', err_text, [
                 { text: 'OK'},
             ]);
         })
+        .finally(()=> {setIsLoading(false)})
+
     }
 
     if (isLoading) {

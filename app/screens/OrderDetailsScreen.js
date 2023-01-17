@@ -30,11 +30,10 @@ export const OrderDetailsScreen = ({navigation,route}) => {
         axiosInstance.get("/orders/"+orderNo)
         .then((response) => {
             setOrderInfo(response.data)
-            setLoading(false)
+            console.log(response.data)
         })
         .catch(e => {
             console.log(e)
-            setLoading(false)
             Alert.alert('An error occurred :(', "Issue connecting to ILP API, please try again later.", [
                 { 
                     text: 'Try Again',
@@ -43,7 +42,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
                 { text: 'OK'},
             ]);
             })
-        return
+        .finally(()=> {setLoading(false)})
     }
 
     React.useEffect(() => {
@@ -94,7 +93,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
                     <Card.Title
                         title="Contents"
                         />
-                    <Card.Content style={{marginBottom:10, marginTop:-15}}>
+                    <Card.Content style={{marginBottom:10, marginTop:-5}}>
                         {
                             orderInfo.items.map( (item,index) => {
                                 return(

@@ -31,11 +31,9 @@ export const OrdersScreen = () => {
             setOrders(response.data)
             setFullOrders(response.data)
             setOrders(doSort(response.data)) //default on render
-            setLoading(false)
         })
         .catch(e => {
             console.log(e)
-            setLoading(false)
             Alert.alert('An error occurred :(', "Issue connecting to ILP API, please try again later.", [
                 { 
                     text: 'Try Again',
@@ -44,7 +42,7 @@ export const OrdersScreen = () => {
                 { text: 'OK'},
             ]);
             })
-        return
+        .finally(()=> {setLoading(false)})
     }
 
 

@@ -9,10 +9,10 @@ export const PasswordField = (props) => {
         setChanged(true)};
     const [changed, setChanged] = React.useState(false);
     const [hidden, setHidden] = React.useState(true);
-    const [icon, setIcon] = React.useState("eye-off-outline")
+    const [icon, setIcon] = React.useState("eye-outline")
     const toggleHidden = () => {
+        !hidden ? setIcon("eye-outline") : setIcon("eye-off-outline")
         setHidden(!hidden)
-        hidden ? setIcon("eye-off-outline") : setIcon("eye-outline")
     };
 
     const hasErrors = () => {

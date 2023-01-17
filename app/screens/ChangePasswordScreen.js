@@ -45,6 +45,7 @@ export const ChangePasswordScreen = () => {
 
 
     const changePassword = (oldPassword, newPassword) => {
+        setIsLoading(true);
         const data = {
             "old_password" : oldPassword,
             "new_password": newPassword
@@ -71,6 +72,7 @@ export const ChangePasswordScreen = () => {
               { text: 'OK'},
           ]);
         })
+        .finally(() => {setIsLoading(false)})
     }
  
     return(
@@ -81,7 +83,7 @@ export const ChangePasswordScreen = () => {
                     <PasswordField label={"Old Password"} password={oldPassword} setPassword={setOldPassword}/>
                     <PasswordField password={password} setPassword={setPassword}/>
                     <PasswordField label={"Confirm Password"} password={confirmPassword} setPassword={setConfirmPassword}/>
-                    <Button style={style.button} onPress={change_local} mode="contained">Submit Change Password</Button>
+                    <Button loading={isLoading} style={style.button} onPress={change_local} mode="contained">Submit Change Password</Button>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -91,6 +93,7 @@ export const ChangePasswordScreen = () => {
 export const style = StyleSheet.create({
     content: {
         marginHorizontal:25,
+        marginVertical:25,
         justifyContent:"space-evenly",
     },
     title: {

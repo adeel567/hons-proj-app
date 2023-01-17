@@ -29,11 +29,9 @@ export const VendorScreen = ({navigation,route}) => {
         .then((response) => {
             setFullMenu(response.data)
             setMenu(doSort(response.data)) //default on render
-            setLoading(false)
         })
         .catch(e => {
             console.log(e)
-            setLoading(false)
             Alert.alert('An error occurred :(', "Issue connecting to ILP API, please try again later.", [
                 { 
                     text: 'Try Again',
@@ -42,6 +40,7 @@ export const VendorScreen = ({navigation,route}) => {
                 { text: 'OK'},
             ]);
             })
+        .finally(()=> {setLoading(false)})
     }
 
     React.useEffect( () => {

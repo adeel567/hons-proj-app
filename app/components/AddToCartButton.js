@@ -32,7 +32,6 @@ export const AddToCartButton = (props) => {
         setIsLoading(true)
         axiosInstance.post(`/cart/item/${props.id}`)
         .then((response) => {
-            setIsLoading(false)
             fetchCartContent()
             if (response.status = 200) {
                 Alert.alert('Add to cart.', response.data.res, [
@@ -40,11 +39,8 @@ export const AddToCartButton = (props) => {
                     { text: 'OK'},
                 ]);
             }
-
-
         })
         .catch((error) => {
-            setIsLoading(false)
             fetchCartContent()
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
@@ -55,6 +51,7 @@ export const AddToCartButton = (props) => {
                 { text: 'OK'},
             ])
         })
+        .finally(() => {setIsLoading(false)})
     }
 
     return (

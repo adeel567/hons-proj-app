@@ -45,12 +45,10 @@ export const SubmitOrderButton = (props) => {
         }
 
         
-
         axiosInstance.post(`/checkout/submit`, params)
         .then((response) => {
             setCartDeliveryDate();
             setCartDeliveryLocation();
-            fetchCartContent().then(setIsLoading(false))
             if (response.status = 200) {
                 const id = response.data.order_number
                 Alert.alert('Submit order', response.data.res, [
@@ -64,7 +62,6 @@ export const SubmitOrderButton = (props) => {
             }
         })
         .catch((error) => {
-            fetchCartContent()
             setIsLoading(false)
             console.log(error)
             var err_text = "Issue when communicating with ILP API, please try again later."
@@ -75,6 +72,7 @@ export const SubmitOrderButton = (props) => {
                 { text: 'OK'},
             ])
         })
+        .finally(()=> {setIsLoading(false), fetchCartContent})
     }
 
     return (

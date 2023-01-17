@@ -27,15 +27,12 @@ export const LiveTrackScreen = ({route}) => {
             if (response.status === 200) { //if tracking is available
                 setTrackable(true)
                 setTrackingInfo(response.data)
-                setIsLoading(false)
             } else {
                 setTrackable(false)
-                setIsLoading(false)
             }
         })
         .catch(e => {
             console.log(e)
-            setIsLoading(false)
             Alert.alert('An error occurred :(', "Issue connecting to ILP API, please try again later.", [
                 { 
                     text: 'Try Again',
@@ -43,7 +40,9 @@ export const LiveTrackScreen = ({route}) => {
                 },
                 { text: 'OK'},
             ]);
-            })
+        })
+        .finally(()=> {setIsLoading(false)})
+
     }
 
     React.useEffect(() => {
