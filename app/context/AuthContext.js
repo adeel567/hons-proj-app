@@ -43,7 +43,7 @@ export const AuthProvider = ({children}) => {
             var values = values.join('\n')
             err_text = values;
         }
-        Alert.alert('An error occurred :(', err_text, [
+        Alert.alert('Register Error', err_text, [
             { text: 'OK'},
         ]);
       })
@@ -74,7 +74,7 @@ export const AuthProvider = ({children}) => {
         if (error?.response?.data?.detail) { //if error from API exists, return that message instead.
             err_text = error.response.data.detail;
         }
-        Alert.alert('An error occurred :(', err_text, [
+        Alert.alert('Login Error', err_text, [
             { text: 'OK'},
         ]);
       });
@@ -95,6 +95,8 @@ export const AuthProvider = ({children}) => {
     })
 
   };
+
+
 
   const fetchCartContent = async () => {
     // setCartRefreshing(true)

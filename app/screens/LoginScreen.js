@@ -10,29 +10,32 @@ import {AuthContext} from '../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 
-
+/**
+ * The screen for logging into the app.
+ * Will use the AuthContext to do the login itself.
+ * @param {*} props navigation prop,
+ * @returns login view.
+ */
 export const LoginScreen = (props) => {
+    const navigation = props.navigation
 
-    const register = () => props.navigation.navigate("Register")
+    const register = () => navigation.navigate("Register")
+    const on_forgot = () => navigation.navigate("Reset Password")
 
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const {isLoading, login} = useContext(AuthContext);
 
+    //Does some local validation before calling the login function of the auth context.
     const login_local = () => {
         if (username.length == 0 || password.length == 0) {
-            Alert.alert('User input error.', "username and password cannot be empty", [
+            Alert.alert('Login Error', "username and password cannot be empty", [
                 { text: 'OK'},
             ]);
         } else {
         login(username,password)
         }
     };
-
-    const on_forgot = () => {
-        Alert.alert('Forgot login.', "Please email app@adeel.uk to reset your login details.")
-    }
-
 
     return (
             <View style={style.supercontainer}>
@@ -73,5 +76,8 @@ export const style = StyleSheet.create({
     },
     forgot: {
         alignItems:'flex-start',
+    },
+    title: {
+        marginBottom:15
     }
 })

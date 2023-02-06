@@ -31,6 +31,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
         .then((response) => {
             setOrderInfo(response.data)
             console.log(response.data)
+            setLoading(false);
         })
         .catch(e => {
             console.log(e)
@@ -42,7 +43,7 @@ export const OrderDetailsScreen = ({navigation,route}) => {
                 { text: 'OK'},
             ]);
             })
-        .finally(()=> {setLoading(false)})
+        // .finally(()=> {setLoading(false)})
     }
 
     React.useEffect(() => {

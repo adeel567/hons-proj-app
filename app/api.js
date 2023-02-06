@@ -1,6 +1,12 @@
 import { applyAuthTokenInterceptor } from 'react-native-axios-jwt';
 import axios from 'axios';
 
+/**
+ * Initialises the Axios instance which we use to access the backend.
+ * Axios will keep the access token refreshed until the refresh token itself expires.
+ * Set the base URL of the server here
+ */
+
 export const BASE_URL = "http://10.69.69.253:8000";
 
 export const axiosInstance = axios.create({

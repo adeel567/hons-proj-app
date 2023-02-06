@@ -23,6 +23,7 @@ import { axiosInstance } from './api';
 import { useNavigation } from '@react-navigation/native';
 import { LiveTrackScreen } from './screens/LiveTrackScreen';
 import { ChangePasswordScreen } from './screens/ChangePasswordScreen';
+import { ResetPasswordScreen } from './screens/ResetPasswordScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -185,6 +186,7 @@ export const AuthStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Reset Password" component={ResetPasswordScreen}/>
       <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>
   );

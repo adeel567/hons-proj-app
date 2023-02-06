@@ -69,7 +69,7 @@ export const ChooseDeliveryLocation = (props) => {
                 { text: 'OK'},
             ]);
         })
-        .finally(()=> {setIsLoading(false)})
+        .finally(()=> {setisLoading(false)})
 
     }
 
