@@ -1,10 +1,13 @@
-import { Icon } from '@rneui/base';
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { View, StyleSheet } from 'react-native';
-import { Title, Headline, Divider, Menu, IconButton, Searchbar} from 'react-native-paper';
+import { Title, Headline, Divider, Menu, IconButton, Searchbar } from 'react-native-paper';
 
-
+/**
+ * Header 
+ * @param {*} props 
+ * @returns 
+ */
 export const HomeHeader = (props) => {
   const [visible, setVisible] = React.useState(false);
   const { userInfo } = useContext(AuthContext);
@@ -18,6 +21,7 @@ export const HomeHeader = (props) => {
         <Headline style={style.title}>What would you like</Headline>
         <Headline style={style.title}>to order for lunch today?</Headline>
       </View>
+
       <View
         style={{
           flexDirection: "row",
@@ -43,7 +47,7 @@ export const HomeHeader = (props) => {
           <Menu
             visible={visible}
             onDismiss={hideSort}
-            anchor={<IconButton onPress={showSort} icon="sort" size={30} color="dimgrey"/>}>
+            anchor={<IconButton onPress={showSort} icon="sort" size={30} color="dimgrey" />}>
             <Menu.Item icon={"sort-alphabetical-ascending"} onPress={() => { props.setSortVal("name-asc"), hideSort() }} title="Name (asc)" />
             <Divider />
             <Menu.Item icon={"sort-alphabetical-descending"} onPress={() => { props.setSortVal("name-desc"), hideSort() }} title="Name (desc)" />
@@ -57,15 +61,15 @@ export const HomeHeader = (props) => {
 
 export const style = StyleSheet.create({
   container: {
-      marginHorizontal:25,
-      marginVertical:25
+    marginHorizontal: 25,
+    marginVertical: 25
   },
   title: {
-      fontSize:32,
-      marginBottom:5
+    fontSize: 32,
+    marginBottom: 5
   },
   subheading: {
-      marginHorizontal:25,
-      marginBottom:5
+    marginHorizontal: 25,
+    marginBottom: 5
   }
 })

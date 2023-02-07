@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, TextInput, Title } from 'react-native-paper';
-import { View, StyleSheet, Alert} from 'react-native';
+import { ActivityIndicator, Button, Card, TextInput, Title } from 'react-native-paper';
+import { View, StyleSheet, Alert } from 'react-native';
 import { axiosInstance } from '../api';
-import {setAuthTokens} from 'react-native-axios-jwt';
-import {NonEmptyTextField} from '../components/NonEmptyTextField'
-import {PasswordField} from '../components/PasswordField'
-import {AuthContext} from '../context/AuthContext';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { setAuthTokens } from 'react-native-axios-jwt';
+import { NonEmptyTextField } from '../components/NonEmptyTextField'
+import { PasswordField } from '../components/PasswordField'
+import { AuthContext } from '../context/AuthContext';
 
 
 /**
@@ -24,30 +23,30 @@ export const LoginScreen = (props) => {
 
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const {isLoading, login} = useContext(AuthContext);
+    const { isLoading, login } = useContext(AuthContext);
 
     //Does some local validation before calling the login function of the auth context.
     const login_local = () => {
         if (username.length == 0 || password.length == 0) {
             Alert.alert('Login Error', "username and password cannot be empty", [
-                { text: 'OK'},
+                { text: 'OK' },
             ]);
         } else {
-        login(username,password)
+            login(username, password)
         }
     };
 
     return (
             <View style={style.supercontainer}>
-                <Spinner visible={isLoading}/>
                 <View
                     style={style.container}
                 >
                     <Title style={style.title}>Welcome back, please login.</Title>
-                    <NonEmptyTextField label={"Username"} text={username} setText={setUsername}/>
-                    <PasswordField password={password} setPassword={setPassword}/>
+                    <NonEmptyTextField label={"Username"} text={username} setText={setUsername} />
+                    <PasswordField password={password} setPassword={setPassword} />
                     <View style={style.buttons}>
                         <Button
+                            loading={isLoading}
                             onPress={login_local}
                             mode="contained">
                             Login
@@ -68,16 +67,16 @@ export const LoginScreen = (props) => {
 }
 export const style = StyleSheet.create({
     container: {
-        marginHorizontal:25, flexDirection: 'column', justifyContent:'space-evenly'
+        marginHorizontal: 25, flexDirection: 'column', justifyContent: 'space-evenly'
     },
     supercontainer: {
-        flex:1,
+        flex: 1,
         justifyContent: 'center',
     },
     forgot: {
-        alignItems:'flex-start',
+        alignItems: 'flex-start',
     },
     title: {
-        marginBottom:15
+        marginBottom: 15
     }
 })

@@ -7,7 +7,11 @@ import { PasswordField } from '../components/PasswordField';
 import { NonEmptyTextField } from '../components/NonEmptyTextField';
 import { axiosInstance } from '../api';
 
-
+/**
+ * Screen which allows for a forgotten password to be reset using the user's email address.
+ * Does not leak whether the email address is in use.
+ * @returns 
+ */
 export const ResetPasswordScreen = () => {   
     const [isLoading, setIsLoading] = React.useState("");
     const [isLoading2, setIsLoading2] = React.useState("");
@@ -17,9 +21,10 @@ export const ResetPasswordScreen = () => {
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
 
+    //does some local validation before calling the endpoint.
     const reset_local = () => {
-        if (email==0) {
-            Alert.alert('Reset Password Error', "Email field can be left empty", [
+        if (email.length==0 || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+            Alert.alert('Reset Password Error', "Email given is invalid or empty", [
                 { text: 'OK'},
             ]);
             return
@@ -35,7 +40,7 @@ export const ResetPasswordScreen = () => {
             return
         } 
         if (password.length==0 || confirmPassword.length==0) {
-            Alert.alert('Reset Password Error', "No password field can be left empty", [
+            Alert.alert('Reset Password Error', "Password fields cannot be left empty", [
                 { text: 'OK'},
             ]);
             return
@@ -52,7 +57,7 @@ export const ResetPasswordScreen = () => {
 
         axiosInstance.post("/auth/reset-password/", params)
         .then(() => {
-            Alert.alert('Reset Password', "An email has been sent with a code for you to use to reset your password.", [
+            Alert.alert('Reset Password', "If this email is associated with an active account, a code has been sent which can be used below.", [
                 { text: 'OK'},
             ]);
         })
@@ -127,6 +132,6 @@ export const style = StyleSheet.create({
         marginBottom:25,
     },
     title: {
-        marginBottom: 15
+        marginBottom: 15,
     }
 })

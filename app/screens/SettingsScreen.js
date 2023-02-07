@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export const SettingsScreen = () => {
     const navigation = useNavigation();
-    const {userInfo, myIsLoggedIn, refreshCache, logout} = useContext(AuthContext);
+    const {userInfo, logout, isLoading} = useContext(AuthContext);
 
     const go_changePass = () => {
         navigation.navigate("Change Password")
@@ -23,11 +23,12 @@ export const SettingsScreen = () => {
             <List.Item title="Email:" description={userInfo.email}/>
 
         </List.Section>
+        <Divider/>
         <List.Section title="Account" titleStyle={style.section_header}>
             <List.Item title="Change Password" onPress={go_changePass} right={(props) => <IconButton {...props} icon="chevron-right"/>}/>
-
         </List.Section>
-            <Button icon={"logout"} style={{marginHorizontal:75}} color='red' onPress={logout}>logout</Button>
+        <Divider/>
+            <Button loading={isLoading} icon={"logout"} style={style.logout_button} color='red' onPress={logout}>logout</Button>
         </View>
     )
 }
@@ -38,5 +39,9 @@ export const style = StyleSheet.create({
     },
     section_header: {
         fontSize:25,
+    },
+    logout_button: {
+        marginTop:20,
+        marginHorizontal:75
     }
 })

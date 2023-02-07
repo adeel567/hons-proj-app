@@ -3,7 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Card, IconButton, Paragraph } from 'react-native-paper';
 
 
-
+/**
+ * Renders a little grapic of the current delivery status. 
+ * Each icon remains greyed out if not happened yet.
+ * @param {Status} props current status
+ * @returns 
+ */
 function DeliveryProgressBar(props) {
     switch (props.status) {
         case "PLACED":

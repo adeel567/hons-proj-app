@@ -5,7 +5,11 @@ import { axiosInstance } from '../api';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
+/**
+ * Submits an order request with the globally held informaiton and cart information
+ * @param {} props 
+ * @returns 
+ */
 export const SubmitOrderButton = (props) => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = React.useState(false);
@@ -21,6 +25,7 @@ export const SubmitOrderButton = (props) => {
     
     }
 
+    //extra confirmation
     const submitCall = () => {
         Alert.alert("Submit Order.", "Are you sure you want to submit this order?",
         [
@@ -64,6 +69,9 @@ export const SubmitOrderButton = (props) => {
         .catch((error) => {
             setIsLoading(false)
             console.log(error)
+            console.log(error.response)
+            console.log(error.response.data)
+
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
                 err_text = error.response.data.res;

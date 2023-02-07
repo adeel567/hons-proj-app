@@ -8,8 +8,13 @@ import { useNavigation } from '@react-navigation/native';
 import { OrderHeader } from '../components/OrderHeader';
 import {filter, orderBy, uniq, map}  from 'lodash';
 import { useFocusEffect } from '@react-navigation/native';
+import { OrderCard } from '../components/OrderCard';
 
-
+/**
+ * View for viewing all the orders that have been placed.
+ * Grabs the orders from the API.
+ * Has no props.
+ */
 export const OrdersScreen = () => {
     const navigation = useNavigation();
     const [orders, setOrders] = React.useState([])
@@ -84,12 +89,11 @@ export const OrdersScreen = () => {
         filtered_data = (filter(filtered_data, {'status': filterVal}))
         setAltered(true)
         }
-
         filtered_data = doSort(filtered_data);
         setOrders(filtered_data)
     }
 
-
+    //Does search on local copy, by searching the #ID and date.
     const doSearch = (query) => {
         setQuery(query)
         const query_formatted = query.toLowerCase();
@@ -102,17 +106,17 @@ export const OrdersScreen = () => {
         setOrders(filtered_data);
     }
 
-
-
+    //return when there are no orders, either none placed or a bad search term.
     const noResults = () => {
         return (
             <View style={{padding:25}}>
-                 <Title style={{alignSelf:"center"}}>No existing orders.</Title>
+                 <Title style={{alignSelf:"center"}}>No existing orders found.</Title>
                  <Subheading style={{alignSelf:"center"}}>Time to do some shopping :D</Subheading>
             </View>
         )
     }
 
+    //loading indicator while async data is fetched.
     if (loading) {
         return (<ActivityIndicator style={{padding:25}} animating={true}/>)
     }
@@ -123,37 +127,9 @@ export const OrdersScreen = () => {
             ListHeaderComponent={<OrderHeader altered={altered} sortVal={sortVal} setSortVal={setSortVal}  setFilterVal={setFilterVal} setQuery={setQuery} query={query} onChange={doSearch} />}
             ListEmptyComponent = {noResults}
             renderItem = {({ item }) => {
-                const on_press = () => {
-                    navigation.navigate('OrderDetailsScreen', {order_id:item.id})
-                }
-
-                const restaurant_names = () => { //get the unique names of restaurants from the items
-                    var x = (map(item.pickups,'name'))
-                    if (x.length == 2) {
-                        return x[0] + " & " + x[1]
-                    } else {
-                        return x[0]
-                    }
-                }
-
-                        return (
-                    <Card style={{marginVertical:10, marginHorizontal:25, borderRadius:10}} onPress={on_press}>
-                        <Card.Title style={{marginBottom:-5}} title={"Order #" + item.id}/>
-
-                        <Card.Content style={{flexDirection: "row"}}>
-                        <View style={{flex:5}}>
-                            <Paragraph style={{color:"dimgrey"}} >{restaurant_names()}</Paragraph>
-                            <Paragraph>Delivery date: {item.delivery_date}</Paragraph>
-
-                        </View>
-                        <View style={{flex:2, alignItems: "center"}}>
-                            <Paragraph style={{color:"dimgrey"}}>{item.status}</Paragraph>
-                            <Paragraph>£{Number(((item.total_pence)/100)).toFixed(2)}</Paragraph>
-                        </View>
-
-                        </Card.Content>
-                    </Card>
-            ) 
+                return (
+                <OrderCard item={item} navigation={navigation}/>
+                )
             }}
             keyExtractor={(item) => item.id}
             refreshControl={

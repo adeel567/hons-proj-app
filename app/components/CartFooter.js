@@ -4,13 +4,17 @@ import { Button, Card, Paragraph, IconButton, Provider, Divider, Text} from 'rea
 import { EmptyCartButton } from './EmptyCartButton';
 import { AuthContext } from '../context/AuthContext';
 import { View } from 'react-native';
-import DatePicker from 'react-native-neat-date-picker'
 import { SubmitOrderButton } from './SubmitOrderButton';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 
-
+/**
+ * Renders all parts of the cart which are below the dynamically generated items
+ */
 export const CartFooter = (props) => {
+    const deliveryLocation = props.deliveryLocation;
+    const deliveryDate = props.deliveryDate;
+
     const {cartContent, isLoading, setCartDeliveryDate} = React.useContext(AuthContext)
     const navigation = useNavigation();
 
@@ -19,6 +23,10 @@ export const CartFooter = (props) => {
     }
 
     const [date, setDate] = React.useState(new Date());
+
+    //get tomorrow's date
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate()+1);
 
     const onChange = (event, selectedDate) => {
       const currentDate = selectedDate;
@@ -33,26 +41,33 @@ export const CartFooter = (props) => {
         onChange,
         mode: currentMode,
         is24Hour: true,
-        minimumDate: new Date()
+        minimumDate: tomorrow,
       });
     };
   
     const showDatepicker = () => {
       showMode('date');
     };
-  
-
-    
 
     return(
         <View>
 
             <Card style={{marginHorizontal:25, marginTop:10, borderRadius:10}}>
                 <Card.Title title={"Cart Summary"}/>
-                <Card.Content style={{alignItems:"flex-end"}}>
-                    <Paragraph>Subtotal: £{Number(((cartContent.subtotal_pence)/100)).toFixed(2)}</Paragraph>
-                    <Paragraph>Delivery Cost: £{Number(((cartContent.delivery_cost_pence)/100)).toFixed(2)}</Paragraph>
-                    <Paragraph>Total: £{Number(((cartContent.total_pence)/100)).toFixed(2)}</Paragraph>
+
+                <Card.Content style={{flexDirection: 'row'}}>
+                    <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                        <Paragraph>Subtotal:</Paragraph>
+                        <Paragraph>Delivery Cost:</Paragraph>
+                        <Paragraph>Total:</Paragraph>
+                    </View>
+                    <View style={{justifyContent: 'flex-end' }}>
+                        <Paragraph>£{Number(((cartContent.subtotal_pence)/100)).toFixed(2)}</Paragraph>
+                        <Paragraph>£{Number(((cartContent.delivery_cost_pence)/100)).toFixed(2)}</Paragraph>
+                        <Divider/>
+                        <Paragraph>£{Number(((cartContent.total_pence)/100)).toFixed(2)}</Paragraph>
+
+                    </View>
 
                 </Card.Content>
             </Card>
@@ -63,17 +78,17 @@ export const CartFooter = (props) => {
                         onPress={pickLocation}>
                 <Card.Title
                     title="Delivery Location"
-                    subtitle= {props.deliveryLocation ? "Valid delivery location set" : "Tap to set delivery location."}
+                    subtitle= {deliveryLocation ? "Valid delivery location set" : "Tap to set delivery location."}
                     right={(props) => <IconButton {...props} icon="chevron-right"/>}
                     />
             </Card>
 
             <Card style={{marginHorizontal:10, marginTop:10, marginBottom:20, borderRadius:10}}
-            onPress={showDatepicker}
-                >
+            onPress={showDatepicker}>
+
                 <Card.Title
                     title={"Delivery Date"} 
-                    subtitle= {props.deliveryDate ? "Set to: " + props.deliveryDate : "Tap to set delivery date."}
+                    subtitle= {deliveryDate ? "Set to: " + deliveryDate : "Tap to set delivery date."}
                     right={(props) => <IconButton {...props} icon="chevron-right"/>}
                     />
             </Card>

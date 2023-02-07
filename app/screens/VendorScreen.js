@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, FlatList, RefreshControl, KeyboardAvoidingView } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MenuItem } from '../components/MenuItem';
 import { axiosInstance, BASE_URL } from '../api';
 import { Card, Divider, IconButton, List, Paragraph, Title, ActivityIndicator } from 'react-native-paper';

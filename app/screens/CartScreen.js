@@ -7,17 +7,23 @@ import { RemoveFromCartButton } from '../components/RemoveFromCartButton';
 import { CartFooter } from '../components/CartFooter';
 import { OpenItem } from '../components/OpenItem';
 import { useNavigation } from '@react-navigation/native';
+import { CartItemCard } from '../components/CartItemCard';
 
+/**
+ * Screen for all of the items in the cart. 
+ * From here more items can be added, or checkout can be completed.
+ */
 export const CartScreen = () => {
     const navigation = useNavigation()
-    const {cartContent, fetchCartContent, cartDeliveryDate, cartDeliveryLocation, isLoading, cartRefreshing} = React.useContext(AuthContext)
+    const { cartContent, fetchCartContent, cartDeliveryDate, cartDeliveryLocation, isLoading, cartRefreshing, isRefreshing } = React.useContext(AuthContext)
     const [itemVisible, setItemVisible] = React.useState();
     const [itemVisibleID, setItemVisibleID] = React.useState();
 
     React.useEffect(() => {
         fetchCartContent() //refresh on first load
-    },[])
+    }, [])
 
+    //pops up a modal of an item in the cart's menu cards.
     const openModal = (id) => {
         setItemVisibleID(id)
         setItemVisible(true)
@@ -26,67 +32,53 @@ export const CartScreen = () => {
 
     const noResults = () => {
         return (
-            <View style={{padding:25}}>
-                 <Title style={{alignSelf:"center"}}>No items in cart.</Title>
-                 <Subheading style={{alignSelf:"center"}}>Time to do some shopping :D</Subheading>
+            <View style={{ padding: 25 }}>
+                <Title style={{ alignSelf: "center" }}>No cart items found.</Title>
+                <Subheading style={{ alignSelf: "center" }}>Time to do some shopping :D</Subheading>
             </View>
         )
     }
 
-    if (isLoading || cartRefreshing) {
-        return (<ActivityIndicator style={{padding:25}} animating={true}/>)
+    if (isLoading) {
+        return (<ActivityIndicator style={{ padding: 25 }} animating={true} />)
     }
 
     return (
         <View>
-            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} usage={"cart"}/>
-        <FlatList 
-            ListHeaderComponent=
-            {
-            <View style={{marginBottom:15}}>
-            </View>
+            {cartRefreshing ? <ActivityIndicator style={{marginTop:25}}/> : <></>}
+            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} usage={"cart"} />
+            <FlatList
+                ListHeaderComponent=
+                {
+                    <View style={{ marginBottom: 15 }}/> //add buffer to top
 
-            }
-            data={cartContent.items}
-            ListEmptyComponent = {noResults}
-            renderItem = {({ item }) => {
-            return (
-                <View style={{marginHorizontal:25, marginVertical:10}}>
-                    <Card style={{borderRadius:10}} onPress=  {() => {openModal(item.id)}}>
-                        <Card.Title title={item.name} subtitle={"Sold by " + item.restaurant_name}/>
-                        <Card.Content style={{alignItems:"flex-end"}}>
-                            <Paragraph>£{Number(((item.pence)/100)).toFixed(2)}</Paragraph>
-                        </Card.Content>
-                        <Card.Actions style={{marginTop:-39}}>
-                            <AddToCartButton navigation={navigation} id={item.id}>Add another</AddToCartButton>
-                            <RemoveFromCartButton navigation={navigation} id={item.id}>Remove</RemoveFromCartButton>
-                        </Card.Actions>
-                    </Card>
-                </View>
-            ) 
-            }}
-            keyExtractor={(item, index) => index}
-            refreshControl={
-                <RefreshControl  refreshing={false} onRefresh={fetchCartContent} />
-            }
-            ListFooterComponent= { () => {
-                if (cartContent.items.length <=0) {
-                    return (<View/>)
-                } else {
-                    return (
-                    <View>
-                        <CartFooter 
-                        deliveryLocation = {cartDeliveryLocation}
-                        deliveryDate = {cartDeliveryDate}
-                        />
-                    </View>
-                    )
                 }
-            }}
-
-
-
-           />
-           </View>
-            )
-        }
+                data={cartContent.items}
+                ListEmptyComponent={noResults}
+                renderItem={({ item }) => {
+                    return (
+                        <CartItemCard item={item} navigation={navigation} openModal={openModal}/>
+                    )
+                }}
+                keyExtractor={(item, index) => index}
+                refreshControl={
+                    <RefreshControl refreshing={false} onRefresh={fetchCartContent} />
+                }
+                ListFooterComponent={() => {
+                    if (cartContent.items.length <= 0) {
+                        return (<View />)
+                    } else {
+                        return (
+                            <View>
+                                <CartFooter
+                                    deliveryLocation={cartDeliveryLocation}
+                                    deliveryDate={cartDeliveryDate}
+                                />
+                            </View>
+                        )
+                    }
+                }}
+            />
+        </View>
+    )
+}

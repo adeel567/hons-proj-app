@@ -6,7 +6,10 @@ import {AuthContext} from '../context/AuthContext';
 import { PasswordField } from '../components/PasswordField';
 import { NonEmptyTextField } from '../components/NonEmptyTextField';
 
-
+/**
+ * Screen for registering a new user.
+ * Uses the authcontext to do the registraiton and automatically logging in the new user.
+ */
 export const RegisterScreen = () => {   
     const {isLoading, register} = useContext(AuthContext);
 
@@ -37,10 +40,6 @@ export const RegisterScreen = () => {
     return(
         <SafeAreaView>
             <ScrollView>
-                {/* <Appbar>
-                    <Appbar.BackAction/>
-                    <Appbar.Content title="Register as a new user"/>
-                </Appbar> */}
                 <View style={style.content}>
                     <Title style={style.title}>Pop your details in below to sign up!</Title>
                     <NonEmptyTextField label={"First Name"} text={firstName} setText={setFirstName}/>
@@ -49,7 +48,7 @@ export const RegisterScreen = () => {
                     <NonEmptyTextField label={"Email"} text={email} setText={setEmail}/>
                     <PasswordField password={password} setPassword={setPassword}/>
                     <PasswordField label={"Confirm Password"} password={confirmPassword} setPassword={setConfirmPassword}/>
-                    <Button style={style.button} onPress={register_local} mode="contained"> Register</Button>
+                    <Button style={style.button} loading={isLoading} onPress={register_local} mode="contained"> Register</Button>
                 </View>
             </ScrollView>
          </SafeAreaView>

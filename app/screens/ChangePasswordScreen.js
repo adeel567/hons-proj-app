@@ -8,7 +8,9 @@ import { NonEmptyTextField } from '../components/NonEmptyTextField';
 import { useNavigation } from '@react-navigation/native';
 import { axiosInstance } from '../api';
 
-
+/**
+ * The view for changing your password, if you know the existing password.
+ */
 export const ChangePasswordScreen = () => {   
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = React.useState(false)
@@ -79,7 +81,7 @@ export const ChangePasswordScreen = () => {
         <SafeAreaView>
             <ScrollView>
                 <View style={style.content}>
-                    {/* <Title style={style.title}>Change your password.</Title> */}
+                    <Title style={style.title}>Use the form below to change your password.</Title>
                     <PasswordField label={"Old Password"} password={oldPassword} setPassword={setOldPassword}/>
                     <PasswordField password={password} setPassword={setPassword}/>
                     <PasswordField label={"Confirm Password"} password={confirmPassword} setPassword={setConfirmPassword}/>
@@ -93,7 +95,6 @@ export const ChangePasswordScreen = () => {
 export const style = StyleSheet.create({
     content: {
         marginHorizontal:25,
-        marginVertical:25,
         justifyContent:"space-evenly",
     },
     title: {

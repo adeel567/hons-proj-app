@@ -1,8 +1,7 @@
-import { Icon } from '@rneui/base';
 import * as React from 'react';
 import { TextInput } from 'react-native';
 import { View } from 'react-native';
-import { Menu, Divider, Modal, Dialog, Portal, Text, Button, Provider, ToggleButton, IconButton, MaterialIcons, Searchbar} from 'react-native-paper';
+import { Menu, Divider, IconButton, Searchbar} from 'react-native-paper';
 
 
 export const OrderHeader = (props) => {
