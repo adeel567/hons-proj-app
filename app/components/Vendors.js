@@ -8,8 +8,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { axiosInstance, BASE_URL } from '../api';
 import {filter, orderBy}  from 'lodash';
 
-
+/**
+ * Renders the entirety of the home screen.
+ * @param {*} props navigation object.
+ * @returns 
+ */
 export const Vendors = (props) => {
+    const navigation = props.navigation;
     const [vendors, setVendors] = React.useState([])
     const [fullVendors, setFullVendors] = React.useState([])
     const [loading, setLoading] = React.useState("false");
@@ -75,20 +80,19 @@ export const Vendors = (props) => {
     }
 
     const noResults = () => {
-        return (<Title style={{alignSelf:"center"}}>No results found!</Title>)
+        return (<Title style={{alignSelf:"center"}}>No vendors found!</Title>)
     }
 
     return(
         <FlatList 
             style={{
-                // marginBottom:150,
             }}
             ListHeaderComponent={<HomeHeader sortVal={sortVal} setSortVal={setSortVal} setQuery={setQuery} query={query} onChange={doSearch} />}
             data={vendors}
             ListEmptyComponent = {noResults}
             renderItem = {({ item }) => {
                return (
-                <Vendor navigation={props.navigation} item={item} name={item.name} description={item.description} image={BASE_URL.concat(item.image)}/>
+                <Vendor navigation={navigation} item={item} name={item.name} description={item.description} image={BASE_URL.concat(item.image)}/>
                ) 
             }}
             keyExtractor={item => item.id}

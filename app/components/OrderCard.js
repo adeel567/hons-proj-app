@@ -27,12 +27,12 @@ export const OrderCard = (props) => {
 
     return (
         <Card style={{marginVertical:10, marginHorizontal:25, borderRadius:10}} onPress={on_press}>
-            <Card.Title style={{marginBottom:-5}} title={"Order #" + item.id}/>
+            <Card.Title testID='orderTitle' style={{marginBottom:-5}} title={"Order #" + item.id}/>
 
             <Card.Content style={{flexDirection: "row"}}>
             <View style={{flex:5}}>
                 <Paragraph style={{color:"dimgrey"}} >{format_restaurant_names()}</Paragraph>
-                <Paragraph>Delivery date: {item.delivery_date}</Paragraph>
+                <Paragraph testID='orderDeliveryDate'>Delivery date: {item.delivery_date}</Paragraph>
 
             </View>
             <View style={{flex:2, alignItems: "center"}}>

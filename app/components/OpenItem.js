@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export const OpenItem = (props) => {
-    const navigation = useNavigation();
+    const navigation = props.navigation;
     const hideModal = () => {props.setVisible(false)};
     const containerStyle = {padding: 20};
     const [itemDetails, setItemDetails] = React.useState();
@@ -44,7 +44,9 @@ export const OpenItem = (props) => {
         return (
             <Portal>
                 <Modal visible={props.visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                    <ActivityIndicator animating={true}/>
+                    <View>
+                        <ActivityIndicator animating={true}/>
+                    </View>
                 </Modal>
             </Portal>
         )
@@ -53,7 +55,9 @@ export const OpenItem = (props) => {
     return (
         <Portal>
             <Modal visible={props.visible} onDismiss={hideModal} contentContainerStyle={containerStyle} >
-            <MenuItem item={itemDetails} usage={props.usage}  navigation = {navigation} setVisible={props.setVisible}/>
+                <View>
+                    <MenuItem item={itemDetails} usage={props.usage}  navigation = {navigation} setVisible={props.setVisible}/>
+                </View>
             </Modal>
          </Portal>
     );

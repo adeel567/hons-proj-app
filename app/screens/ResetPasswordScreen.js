@@ -39,8 +39,8 @@ export const ResetPasswordScreen = () => {
             ]);
             return
         } 
-        if (password.length==0 || confirmPassword.length==0) {
-            Alert.alert('Reset Password Error', "Password fields cannot be left empty", [
+        if (token.length==0 || password.length==0 || confirmPassword.length==0) {
+            Alert.alert('Reset Password Error', "Code and/or password fields cannot be left empty", [
                 { text: 'OK'},
             ]);
             return

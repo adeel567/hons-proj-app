@@ -15,7 +15,7 @@ export const EmptyCartButton = (props) => {
     const {fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate} = React.useContext(AuthContext)
     const [isLoading, setIsLoading] = React.useState(false);
 
-    const emptyCall = () => {
+    const emptyCall = () => { //adds confirmation prompt, uses left button to continue, to prevent accidental clicks.
         Alert.alert("Empty Cart", "Are you sure you want to empty the cart?",
         [
             {text: "Confirm", onPress:emptyCall2},
@@ -49,9 +49,6 @@ export const EmptyCartButton = (props) => {
     }
 
     return (
-        // isLoading ?
-        // <ActivityIndicator animating={true}/>
-        // :
         <Button {...props} loading={isLoading} color="red"  mode={"elevated"} icon={"delete"} onPress={emptyCall}>{props.children}</Button>
     )
 }

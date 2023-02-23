@@ -34,6 +34,7 @@ export const HomeHeader = (props) => {
           style={{
             borderRadius: 10,
           }}
+          accessibilityValue={"search-bar"}
           placeholder='Search for restaurants.'
           onChangeText={queryText => props.onChange(queryText)}
           value={props.query} />
@@ -47,10 +48,10 @@ export const HomeHeader = (props) => {
           <Menu
             visible={visible}
             onDismiss={hideSort}
-            anchor={<IconButton onPress={showSort} icon="sort" size={30} color="dimgrey" />}>
-            <Menu.Item icon={"sort-alphabetical-ascending"} onPress={() => { props.setSortVal("name-asc"), hideSort() }} title="Name (asc)" />
+            anchor={<IconButton  testID='sortIcon' accessibilityValue={"filter-icon-button"} onPress={showSort} icon="sort" size={30} color="dimgrey" />}>
+            <Menu.Item testID='sortAsc' icon={"sort-alphabetical-ascending"} onPress={() => { props.setSortVal("name-asc"), hideSort() }} title="Name (asc)" />
             <Divider />
-            <Menu.Item icon={"sort-alphabetical-descending"} onPress={() => { props.setSortVal("name-desc"), hideSort() }} title="Name (desc)" />
+            <Menu.Item testID='sortDesc' icon={"sort-alphabetical-descending"} onPress={() => { props.setSortVal("name-desc"), hideSort() }} title="Name (desc)" />
           </Menu>
         </View>
       </View>

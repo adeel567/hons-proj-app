@@ -15,8 +15,8 @@ import { OrderCard } from '../components/OrderCard';
  * Grabs the orders from the API.
  * Has no props.
  */
-export const OrdersScreen = () => {
-    const navigation = useNavigation();
+export const OrdersScreen = (props) => {
+    const navigation = props.navigation;
     const [orders, setOrders] = React.useState([])
     const [fullOrders, setFullOrders] = React.useState([])
     const [loading, setLoading] = React.useState("false");

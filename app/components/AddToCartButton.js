@@ -53,6 +53,6 @@ export const AddToCartButton = (props) => {
     }
 
     return (
-        <Button {...props} icon={"cart-plus"} color={"darkgreen"} loading={isLoading} onPress={addCall}>{props.children}</Button>
+        <Button {...props} icon={"cart-plus"} color={"darkgreen"} disabled={isLoading} loading={isLoading} onPress={addCall}>{props.children}</Button>
     )
 }

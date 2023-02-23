@@ -42,8 +42,8 @@ export const LoginScreen = (props) => {
                     style={style.container}
                 >
                     <Title style={style.title}>Welcome back, please login.</Title>
-                    <NonEmptyTextField label={"Username"} text={username} setText={setUsername} />
-                    <PasswordField password={password} setPassword={setPassword} />
+                    <NonEmptyTextField id="Username" label={"Username"} text={username} setText={setUsername} />
+                    <PasswordField id="Password" password={password} setPassword={setPassword} />
                     <View style={style.buttons}>
                         <Button
                             loading={isLoading}

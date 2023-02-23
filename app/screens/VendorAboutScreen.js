@@ -4,6 +4,12 @@ import { Card, Divider, IconButton, List, Paragraph, Title, ActivityIndicator } 
 import {filter, orderBy}  from 'lodash';
 import MapView, { Marker } from 'react-native-maps';
 
+/**
+ * Takes a vendor's information and shows a more detailed about screen for them,
+ * such as the location.
+ * @param {*} nav_route  
+ * @returns VendorAbout screen
+ */
 export const VendorAboutScreen = ({navigation, route}) => {
     const vendor = route.params.vendor
 
@@ -28,6 +34,7 @@ export const VendorAboutScreen = ({navigation, route}) => {
                 }}
                 >
                     <Marker
+                        testID='marker'
                         title={vendor.name}
                         coordinate={{latitude: vendor.latitude, longitude: vendor.longitude}}
                         description={vendor.description}

@@ -6,6 +6,12 @@ import { Card, Divider, IconButton, List, Paragraph, Title, ActivityIndicator } 
 import { MenuBar } from '../components/MenuBar';
 import {filter, orderBy}  from 'lodash';
 
+/**
+ * This is the page on which we can view the details of a vendor 
+ * and the items they have for sale
+ * @param {navigation,route} vendor info is passed with the route.
+ * @returns VendorScreen
+ */
 export const VendorScreen = ({navigation,route}) => {
     const vendor = route.params.vendor
     const image_url = BASE_URL.concat(vendor.image);
@@ -84,7 +90,7 @@ export const VendorScreen = ({navigation,route}) => {
     }
 
     const noResults = () => {
-        return (<Title style={{alignSelf:"center"}}>No results found!</Title>)
+        return (<Title style={{alignSelf:"center"}}>No items found!</Title>)
     }
 
     return (
@@ -96,18 +102,18 @@ export const VendorScreen = ({navigation,route}) => {
 
                 <View>
                     <Card>
-                        <Card.Cover source={{uri: image_url}}/>
+                        <Card.Cover accessibilityValue={"vendor-cover-image"} source={{uri: image_url}}/>
                     </Card>
 
                     <Card style={{marginVertical:25, marginHorizontal:10, borderRadius:10}}
                         onPress={viewAbout}>
                         <Card.Title
+                            accessibilityValue={"vendor-about-card"}
                             title={vendor.name}
                             subtitle="Tap to view about info and location."
                             right={(props) => <IconButton {...props} icon="chevron-right"/>}
                             />
                     </Card>
-                    {/* <Title style={{}}>Menu</Title> */}
                     <KeyboardAvoidingView>
                         <MenuBar sortVal={sortVal} setSortVal={setSortVal} setQuery={setQuery} query={query} onChange={doSearch} />
                     </KeyboardAvoidingView>

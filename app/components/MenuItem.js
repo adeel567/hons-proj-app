@@ -15,14 +15,14 @@ export const MenuItem = (props) => {
 
     return(
     <Card style={{marginBottom:30, marginHorizontal:25}}>
-        <Card.Cover source={{ uri: BASE_URL.concat(props.item.image)}} />
+        <Card.Cover testID='itemImage' source={{ uri: BASE_URL.concat(props.item.image)}} />
         <Card.Content>
-            <Title style={{marginTop:7}}>{props.item.name}</Title>
-            <Paragraph>{props.item.description}</Paragraph>
-            <Subheading>£{Number(((props.item.pence)/100)).toFixed(2)}</Subheading>
+            <Title testID='itemTitle' style={{marginTop:7}}>{props.item.name}</Title>
+            <Paragraph testID='itemDescription'>{props.item.description}</Paragraph>
+            <Subheading testID='itemPrice'>£{Number(((props.item.pence)/100)).toFixed(2)}</Subheading>
         </Card.Content>
 
-        {(props.usage !== "cart")
+        {(props.usage !== "cart") //dependent on context of in the menu or in the cart, the card may need to behave different.
             ?
             (props.usage ==="order")
                 ? 

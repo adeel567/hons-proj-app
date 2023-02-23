@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
  * @returns 
  */
 export const SubmitOrderButton = (props) => {
-    const navigation = useNavigation();
+    const navigation = props.navigation;
     const [isLoading, setIsLoading] = React.useState(false);
     const {setTriggerOrderRefresh, triggerOrderRefresh, fetchCartContent, setCartDeliveryLocation, setCartDeliveryDate, cartDeliveryLocation, cartDeliveryDate, } = React.useContext(AuthContext)
 
@@ -68,19 +68,17 @@ export const SubmitOrderButton = (props) => {
         })
         .catch((error) => {
             setIsLoading(false)
-            console.log(error)
-            console.log(error.response)
             console.log(error.response.data)
 
             var err_text = "Issue when communicating with ILP API, please try again later."
             if (error?.response?.data?.res) { 
-                err_text = error.response.data.res;
+                err_text = error.response.data.res[0];
             }
-            Alert.alert('Add item to cart', err_text, [
+            Alert.alert('Submit order', err_text, [
                 { text: 'OK'},
             ])
         })
-        .finally(()=> {setIsLoading(false), fetchCartContent})
+        .finally(()=> {setIsLoading(false), fetchCartContent()})
     }
 
     return (

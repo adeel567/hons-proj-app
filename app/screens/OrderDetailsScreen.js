@@ -35,7 +35,6 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
         axiosInstance.get("/orders/" + orderNo)
             .then((response) => {
                 setOrderInfo(response.data)
-                console.log(response.data)
                 setLoading(false);
             })
             .catch(e => {
@@ -59,11 +58,11 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
     }, [orderNo])
 
     if (loading) {
-        return (<ActivityIndicator animating={true} />)
+        return (<ActivityIndicator testID='loading' animating={true} />)
     }
 
     return (
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadOrderData} />}>
+        <ScrollView testID='scrollView' refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadOrderData} />}>
             <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} usage={"order"} />
             <DeliveryProgress title={"Status"} status={orderInfo.status} delivery_date={orderInfo.delivery_date} style={{ marginTop: 20, marginBottom: 10, marginHorizontal: 10, borderRadius: 10 }} />
             <OrderDetailsTrackCard orderInfo={orderInfo} navigation={navigation}/>

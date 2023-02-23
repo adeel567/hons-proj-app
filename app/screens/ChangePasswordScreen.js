@@ -11,8 +11,8 @@ import { axiosInstance } from '../api';
 /**
  * The view for changing your password, if you know the existing password.
  */
-export const ChangePasswordScreen = () => {   
-    const navigation = useNavigation();
+export const ChangePasswordScreen = (props) => {   
+    const navigation = props.navigation;
     const [isLoading, setIsLoading] = React.useState(false)
     const [oldPassword, setOldPassword] = React.useState("");
     const [password, setPassword] = React.useState("");
@@ -54,7 +54,7 @@ export const ChangePasswordScreen = () => {
         }
         axiosInstance.post("/auth/change-password", data)
         .then(() => {
-          Alert.alert('Change Password.', "Password change was successful", [
+          Alert.alert('Change Password.', "Password change was successful.", [
             { text: 'OK', onPress:doGoBack},
         ]);
         })

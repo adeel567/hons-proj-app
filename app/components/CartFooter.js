@@ -16,7 +16,7 @@ export const CartFooter = (props) => {
     const deliveryDate = props.deliveryDate;
 
     const {cartContent, isLoading, setCartDeliveryDate} = React.useContext(AuthContext)
-    const navigation = useNavigation();
+    const navigation = props.navigation;
 
     const pickLocation = () => { 
         navigation.navigate('Choose Delivery Location');
@@ -41,7 +41,7 @@ export const CartFooter = (props) => {
         onChange,
         mode: currentMode,
         is24Hour: true,
-        minimumDate: tomorrow,
+        minimumDate: new Date(),
       });
     };
   
@@ -94,7 +94,7 @@ export const CartFooter = (props) => {
             </Card>
 
             <View style={{marginHorizontal:50, height:100, justifyContent:"space-around"}}>
-                <SubmitOrderButton>Submit Order</SubmitOrderButton>
+                <SubmitOrderButton navigation={navigation}>Submit Order</SubmitOrderButton>
                 <EmptyCartButton>Empty Cart</EmptyCartButton>
             </View>            
         </View>

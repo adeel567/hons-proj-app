@@ -5,8 +5,14 @@ import { View, StyleSheet, Platform} from 'react-native';
 import {AuthContext} from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-export const SettingsScreen = () => {
-    const navigation = useNavigation();
+/**
+ * Setting screen which currently displays the user's profile
+ * and lets them change their password or log out of the app.
+ * Logging out destroys locally held data and push services.
+ * @returns Settings Screen
+ */
+export const SettingsScreen = (props) => {
+    const navigation = props.navigation;
     const {userInfo, logout, isLoading} = useContext(AuthContext);
 
     const go_changePass = () => {

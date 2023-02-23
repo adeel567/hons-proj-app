@@ -120,7 +120,7 @@ export const DeliveryProgress = (props) => {
             <Card.Title title={props.title} />
             <Card.Content style={{alignItems:"center"}}>
                 <DeliveryProgressBar status={props.status}/>
-                <Paragraph>Order status is {props.status.toLowerCase()}.</Paragraph>
+                <Paragraph testID='progressStatusText'>Order status is {props.status.toLowerCase()}.</Paragraph>
                 {props.status === "DELIVERED" ?
                     <Paragraph>Delivered on {props.delivery_date}.</Paragraph>
                     :

@@ -1,21 +1,18 @@
 import React, { useContext } from 'react';
-import { ActivityIndicator, Button, Card, Divider, IconButton, Modal, Paragraph, Portal, Provider, Subheading, Text, Title } from 'react-native-paper';
+import { ActivityIndicator,Subheading, Title } from 'react-native-paper';
 import { AuthContext } from '../context/AuthContext';
 import { Alert, FlatList, RefreshControl, View } from 'react-native';
-import { AddToCartButton } from '../components/AddToCartButton';
-import { RemoveFromCartButton } from '../components/RemoveFromCartButton';
 import { CartFooter } from '../components/CartFooter';
 import { OpenItem } from '../components/OpenItem';
-import { useNavigation } from '@react-navigation/native';
 import { CartItemCard } from '../components/CartItemCard';
 
 /**
  * Screen for all of the items in the cart. 
  * From here more items can be added, or checkout can be completed.
  */
-export const CartScreen = () => {
-    const navigation = useNavigation()
-    const { cartContent, fetchCartContent, cartDeliveryDate, cartDeliveryLocation, isLoading, cartRefreshing, isRefreshing } = React.useContext(AuthContext)
+export const CartScreen = (props) => {
+    const navigation = props.navigation
+    const { cartContent, fetchCartContent, cartDeliveryDate, cartDeliveryLocation, isLoading, cartRefreshing} = React.useContext(AuthContext)
     const [itemVisible, setItemVisible] = React.useState();
     const [itemVisibleID, setItemVisibleID] = React.useState();
 
@@ -40,13 +37,13 @@ export const CartScreen = () => {
     }
 
     if (isLoading) {
-        return (<ActivityIndicator style={{ padding: 25 }} animating={true} />)
+        return (<ActivityIndicator style={{padding:25}} animating={true} />)
     }
 
     return (
         <View>
             {cartRefreshing ? <ActivityIndicator style={{marginTop:25}}/> : <></>}
-            <OpenItem visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} usage={"cart"} />
+            <OpenItem navigation={navigation} visible={itemVisible} setVisible={setItemVisible} itemID={itemVisibleID} usage={"cart"} />
             <FlatList
                 ListHeaderComponent=
                 {
@@ -71,6 +68,7 @@ export const CartScreen = () => {
                         return (
                             <View>
                                 <CartFooter
+                                    navigation={navigation}
                                     deliveryLocation={cartDeliveryLocation}
                                     deliveryDate={cartDeliveryDate}
                                 />
