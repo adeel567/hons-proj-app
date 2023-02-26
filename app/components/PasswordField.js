@@ -22,6 +22,7 @@ export const PasswordField = (props) => {
   return (
     <View>
       <TextInput
+        testID="passwordField"
         label={props.label}
         secureTextEntry={hidden}
         onChangeText={onChangeText}

@@ -21,11 +21,11 @@ export const Vendor = (props) => {
   };
   return (
     <Card
-      accessibilityValue={"vendor-card"}
+      testID="vendorCard"
       style={{ marginBottom: 30, marginHorizontal: 25 }}
       onPress={on_press}
     >
-      <Card.Cover source={{ uri: props.image }} />
+      <Card.Cover testID="vendorImage" source={{ uri: props.image }} />
       <Card.Content>
         <Title testID="vendorTitle" style={{ marginTop: 7 }}>
           {props.name}

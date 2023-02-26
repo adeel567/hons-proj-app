@@ -85,7 +85,7 @@ it("All elements on the page", async () => {
   await waitFor(() => {
     //check part of each element, to see if they exist.
     screen.getByText("Hello " + userInfo.first_name + "."); //should have personal greeting
-    screen.getAllByAccessibilityValue("search-bar")[0];
+    screen.getAllByTestId("searchBar")[0];
     screen.getAllByText("Rudis");
     screen.getAllByText("Greggs");
   });

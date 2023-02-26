@@ -64,9 +64,9 @@ const renderScreen = () => {
 it("All elements exist", async () => {
   renderScreen();
   await waitFor(() => {
-    screen.getAllByAccessibilityValue("vendor-cover-image")[0];
-    screen.getAllByAccessibilityValue("search-bar")[0];
-    screen.getAllByAccessibilityValue("vendor-about-card")[0];
+    screen.getAllByTestId("vendorCoverImage")[0];
+    screen.getAllByTestId("searchBar")[0];
+    screen.getAllByText("Tap to view about info and location.")[0];
     screen.getAllByText(mockMenu[0].name);
     screen.getAllByText(mockMenu[1].name);
   });

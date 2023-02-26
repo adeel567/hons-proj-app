@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState } from "react";
 import { axiosInstance } from "../api";
 import {
@@ -58,14 +57,14 @@ export const AuthProvider = ({ children }) => {
         }
       })
       .catch((error) => {
-        console.log(error.response.data);
         var err_text =
           "Issue when communicating with ILP API, please try again later.";
         if (error?.response?.data) {
+          console.log(error.response.data);
           //if error from API exists, return that message instead.
           var values = Object.keys(error.response.data).map(function (key) {
             return error.response.data[key][0];
-          }); //need to change API
+          });
           var values = values.join("\n");
           err_text = values;
         }
@@ -130,7 +129,6 @@ export const AuthProvider = ({ children }) => {
       .then(() => {
         setIsLoading(false);
         clearAuthTokens().then(setMyIsLoggedIn(false));
-        AsyncStorage.clear();
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -151,7 +149,6 @@ export const AuthProvider = ({ children }) => {
       .then((response) => {
         setCartContent(response.data);
         setCartBadge(response.data.items.length);
-        AsyncStorage.setItem("cartContent", JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(`fetch cart error ${e}`);
@@ -169,7 +166,6 @@ export const AuthProvider = ({ children }) => {
       .get("/profile")
       .then((response) => {
         setUserInfo(response.data);
-        AsyncStorage.setItem("userInfo", JSON.stringify(response.data));
       })
       .catch((e) => {
         console.log(`fetch profile error ${e}`);

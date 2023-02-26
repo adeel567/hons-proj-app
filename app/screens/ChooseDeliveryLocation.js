@@ -16,14 +16,15 @@ import { AuthContext } from "../context/AuthContext";
 import { perimeter } from "../../assets/perimeter";
 import { nfz } from "../../assets/nfz";
 
+const alertHeader = "Issue with the chosen location"
 const ZOOM_DELTA_OUT = 0.01; //Crop of map when no location chosen
 const ZOOM_DELTA_IN = 0.00069; //Crop of map when a location has been chosen
-const DEFAULT_LONGITUDE = -3.1883802;
-const DEFAULT_LATITUDE = 55.94399411;
+export const DEFAULT_LONGITUDE = -3.1883802;
+export const DEFAULT_LATITUDE = 55.94399411;
 const CHANGE_THRESHOLD = 6; //To prevent map drift, there has to be a threshold on when to register a change of location.
 
 export const ChooseDeliveryLocation = (props) => {
-  const navigation = useNavigation();
+  const navigation = props.navigation;
   const [isLoading, setisLoading] = React.useState(false);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
 
@@ -79,7 +80,7 @@ export const ChooseDeliveryLocation = (props) => {
           //if error from API exists, return that message instead.
           err_text = error.response.data.res[0];
         }
-        Alert.alert("Issue with the chosen location.", err_text, [
+        Alert.alert(alertHeader, err_text, [
           { text: "OK" },
         ]);
       })
@@ -95,6 +96,7 @@ export const ChooseDeliveryLocation = (props) => {
   return (
     <View style={styles.map}>
       <MapView
+        testID="mapView"
         style={styles.map}
         region={region}
         onRegionChangeComplete={onRegionChange}
@@ -108,6 +110,7 @@ export const ChooseDeliveryLocation = (props) => {
       </View>
       <SafeAreaView style={styles.footer}>
         <Button
+          testID="confirmLocationButton"
           onPress={confirmLocation}
           loading={isRefreshing}
           mode="contained"

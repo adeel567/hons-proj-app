@@ -16,7 +16,7 @@ const order =
       "subtotal_pence": 330,
       "total_pence": 380,
       "owner": 19,
-      "status": "PICKUP",
+      "status": "DELIVERY",
       "items": [
         {
           "id": 69,
@@ -101,7 +101,7 @@ const renderCard = (order) => {
 }
 
 it("Renders correct screen when already delivered", async() => {
-    renderCard(order)
+    renderCard(order2)
     await waitFor(() => { 
         screen.getByText("Delivery Location")
         screen.getByText("Tap to view delivery location.")
@@ -109,17 +109,17 @@ it("Renders correct screen when already delivered", async() => {
 })
 
 it("Renders correct screen when tracking is available", async() => {
-    renderCard(order2)
+    renderCard(order)
     await waitFor(() => { 
-        screen.getByText("Live Tracking")
+        screen.getByText("Live Track")
         screen.getByText("Tap to view delivery location and live tracking.")
     })
 })
 
 it("Press on card should navigate to correct screen", async() => {
-    renderCard(order2)
+    renderCard(order)
     await waitFor(() => { 
-        fireEvent.press(screen.getByText("Live Tracking"));
-        expect(navigation.navigate).toHaveBeenCalledWith("Live Track", )
+        fireEvent.press(screen.getByText("Live Track"));
+        expect(navigation.navigate).toHaveBeenCalledWith("Live Track", expect.anything())
     })
 })

@@ -39,10 +39,10 @@ export const HomeHeader = (props) => {
         }}
       >
         <Searchbar
+          testID="searchBar"
           style={{
             borderRadius: 10,
           }}
-          accessibilityValue={"search-bar"}
           placeholder="Search for restaurants."
           onChangeText={(queryText) => props.onChange(queryText)}
           value={props.query}
@@ -61,7 +61,6 @@ export const HomeHeader = (props) => {
             anchor={
               <IconButton
                 testID="sortIcon"
-                accessibilityValue={"filter-icon-button"}
                 onPress={showSort}
                 icon="sort"
                 size={30}

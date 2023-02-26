@@ -83,6 +83,7 @@ export const LiveTrackFooter = (props) => {
           mode="contained"
           color="blue"
           loading={isRefreshing}
+          testID="refreshButton"
         >
           Refresh
         </Button>

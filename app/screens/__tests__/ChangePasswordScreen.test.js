@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { axiosInstance } from "../../api";
 import { AuthContext, AuthProvider } from "../../context/AuthContext";
 import { Alert } from "react-native";
@@ -17,21 +17,27 @@ const renderScreen = () => {
 };
 
 it("All elements exist", async () => {
+  await waitFor (() => {
   renderScreen();
   screen.getAllByText("Old Password");
   screen.getAllByText("Password");
   screen.getAllByText("Confirm Password");
   screen.getByText("Submit Change Password");
+})
 });
 
 it("Trying to submit empty fields should fail", async () => {
+  await waitFor (() => {
   renderScreen();
   fireEvent.press(screen.getByText("Submit Change Password"));
   screen.getAllByText("Password cannot be empty!");
+  })
 });
 
 it("Old and new password must be different", async () => {
   jest.spyOn(Alert, "alert");
+
+  await waitFor (() => {
   renderScreen();
   fireEvent.changeText(screen.getAllByText("Old Password")[0], "password");
   fireEvent.changeText(screen.getAllByText("Password")[0], "password");
@@ -42,10 +48,13 @@ it("Old and new password must be different", async () => {
     "Old and new password must not be the same.",
     [{ text: "OK" }]
   );
+  })
 });
 
 it("Passwords must match", async () => {
   jest.spyOn(Alert, "alert");
+
+  await waitFor (() => {
   renderScreen();
   fireEvent.changeText(screen.getAllByText("Old Password")[0], "password");
   fireEvent.changeText(screen.getAllByText("Password")[0], "password123");
@@ -59,6 +68,7 @@ it("Passwords must match", async () => {
     "Passwords do not match.",
     [{ text: "OK" }]
   );
+  })
 });
 
 it("API call should be made if fields are correct.", async () => {
@@ -73,6 +83,8 @@ it("API call should be made if fields are correct.", async () => {
     old_password: "Password123!",
     new_password: "Password1234!",
   };
+
+  await waitFor (() => {
   renderScreen();
   fireEvent.changeText(
     screen.getAllByText("Old Password")[0],
@@ -88,4 +100,5 @@ it("API call should be made if fields are correct.", async () => {
     "/auth/change-password",
     data
   );
+  })
 });

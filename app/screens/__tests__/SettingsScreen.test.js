@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react-native";
 import { axiosInstance } from "../../api";
 import { AuthContext, AuthProvider } from "../../context/AuthContext";
 import { Alert } from "react-native";
@@ -49,6 +54,8 @@ it("Navigate to change password", async () => {
 
 it("Should call logout when logging out", async () => {
   renderScreen();
-  fireEvent.press(screen.getByText("logout"));
-  expect(logout).toHaveBeenCalled();
+  await waitFor(() => {
+    fireEvent.press(screen.getByText("logout"));
+    expect(logout).toHaveBeenCalled();
+  });
 });

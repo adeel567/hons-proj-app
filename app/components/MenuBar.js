@@ -34,7 +34,7 @@ export const MenuBar = (props) => {
         style={{
           borderRadius: 10,
         }}
-        accessibilityValue={"search-bar"}
+        testID="searchBar"
         placeholder="Search for menu items."
         onChangeText={(queryText) => props.onChange(queryText)}
         value={props.query}

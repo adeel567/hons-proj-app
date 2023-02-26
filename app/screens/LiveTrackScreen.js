@@ -34,10 +34,9 @@ import { nfz } from "../../assets/nfz";
  * @param {*}
  * @returns
  */
-export const LiveTrackScreen = ({ route }) => {
+export const LiveTrackScreen = ({ route, navigation }) => {
   const orderInfo = route.params.orderInfo;
   const orderNo = route.params.orderNo;
-  const navigation = useNavigation();
   const [trackable, setTrackable] = React.useState(orderInfo.trackable);
   const [trackingInfo, setTrackingInfo] = React.useState();
   const [refreshTracking, setRefreshTracking] = React.useState(false);
@@ -78,7 +77,7 @@ export const LiveTrackScreen = ({ route }) => {
 
   React.useEffect(() => {
     loadTrackingData(); //refresh on first load
-  }, [refreshTracking, triggerOrderRefresh]);
+  }, [refreshTracking, triggerOrderRefresh]); //refresh when triggered in context
 
   React.useEffect(() => {
     trackable
@@ -114,6 +113,7 @@ export const LiveTrackScreen = ({ route }) => {
         {trackable && trackingInfo.delivery_info.status !== "DELIVERED" ? ( //drone is shown when not delivered and is trackable
           <Marker
             title={"Drone"}
+            testID={"droneMarker"}
             icon={drone}
             description={
               "Making delivery " + trackingInfo.queue.current_delivery
@@ -134,6 +134,7 @@ export const LiveTrackScreen = ({ route }) => {
           ) => (
             <Marker
               title="Pickup"
+              testID="pickupMarker"
               key={index}
               icon={shop}
               description={pickup.name}
@@ -147,6 +148,7 @@ export const LiveTrackScreen = ({ route }) => {
 
         <Marker //display delivery location as a default marker.
           title={"Delivery Location"}
+          testID="deliveryMarker"
           coordinate={{
             longitude: orderInfo.delivery_longitude,
             latitude: orderInfo.delivery_latitude,
@@ -154,7 +156,7 @@ export const LiveTrackScreen = ({ route }) => {
         />
       </MapView>
 
-      <SafeAreaView style={styles.footer}>
+      <SafeAreaView testID="LTFooter" style={styles.footer}>
         <LiveTrackFooter
           trackable={trackable}
           trackingInfo={trackingInfo}

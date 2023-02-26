@@ -8,8 +8,6 @@ import {
 import { axiosInstance } from "../../api";
 import { AuthContext, AuthProvider } from "../../context/AuthContext";
 import { Alert } from "react-native";
-import { ResetPasswordScreen } from "../ResetPasswordScreen";
-import { VendorScreen } from "../VendorScreen";
 import { VendorAboutScreen } from "../VendorAboutScreen";
 
 /**

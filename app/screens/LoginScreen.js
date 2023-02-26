@@ -57,7 +57,7 @@ export const LoginScreen = (props) => {
           setPassword={setPassword}
         />
         <View style={style.buttons}>
-          <Button loading={isLoading} onPress={login_local} mode="contained">
+          <Button testID="loginButton" loading={isLoading} onPress={login_local} mode="contained">
             Login
           </Button>
           <Button onPress={register}>New here? Register</Button>

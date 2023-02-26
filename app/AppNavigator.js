@@ -33,7 +33,7 @@ const Stack = createNativeStackNavigator();
  * or to load the register/login screens.
  */
 export const AppNavigator = () => {
-  const { myIsLoggedIn, isLoading, isRefreshing } = useContext(AuthContext);
+  const { myIsLoggedIn, isRefreshing } = useContext(AuthContext);
   if (isRefreshing) {
     return (
       <SafeAreaView>

@@ -35,7 +35,7 @@ export const SubmitOrderButton = (props) => {
   //extra confirmation
   const submitCall = () => {
     Alert.alert(
-      "Submit Order.",
+      "Submit Order",
       "Are you sure you want to submit this order?",
       [{ text: "Cancel" }, { text: "Confirm", onPress: submitCall2 }]
     );
@@ -64,7 +64,7 @@ export const SubmitOrderButton = (props) => {
         setCartDeliveryLocation();
         if ((response.status = 200)) {
           const id = response.data.order_number;
-          Alert.alert("Submit order", response.data.res, [
+          Alert.alert("Submit Order", response.data.res, [
             {
               text: "Go To Order",
               onPress: () => {
@@ -84,7 +84,7 @@ export const SubmitOrderButton = (props) => {
         if (error?.response?.data?.res) {
           err_text = error.response.data.res[0];
         }
-        Alert.alert("Submit order", err_text, [{ text: "OK" }]);
+        Alert.alert("Submit Order", err_text, [{ text: "OK" }]);
       })
       .finally(() => {
         setIsLoading(false), fetchCartContent();

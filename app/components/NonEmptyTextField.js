@@ -16,6 +16,7 @@ export const NonEmptyTextField = (props) => {
   return (
     <View>
       <TextInput
+        testID="textField"
         label={props.label}
         value={props.text}
         onChangeText={onChangeText}

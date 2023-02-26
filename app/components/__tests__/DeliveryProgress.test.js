@@ -33,6 +33,14 @@ it("Text should render correctly when on stages before delivery", async() => {
     })
 })
 
+it("Text should render correctly when cancelled", async() => {
+    await waitFor(() => {
+        renderComponent("CANCELLED")
+        screen.getByText("Order status is cancelled.")
+        expect(screen.queryByText("Delivered on 2023-04-20.")).toBeNull()
+    })
+})
+
 it("Correct set of icons for a status", async() => {
     await waitFor(() => {
         renderComponent("PICKUP")

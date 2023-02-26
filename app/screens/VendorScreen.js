@@ -122,7 +122,7 @@ export const VendorScreen = ({ navigation, route }) => {
         <View>
           <Card>
             <Card.Cover
-              accessibilityValue={"vendor-cover-image"}
+              testID="vendorCoverImage"
               source={{ uri: image_url }}
             />
           </Card>
@@ -136,7 +136,7 @@ export const VendorScreen = ({ navigation, route }) => {
             onPress={viewAbout}
           >
             <Card.Title
-              accessibilityValue={"vendor-about-card"}
+              testID="vendorAboutCard"
               title={vendor.name}
               subtitle="Tap to view about info and location."
               right={(props) => <IconButton {...props} icon="chevron-right" />}
