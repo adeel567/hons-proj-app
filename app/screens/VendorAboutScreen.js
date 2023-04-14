@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, Divider, IconButton, List, Paragraph, Title, ActivityIndicator } from 'react-native-paper';
 import {filter, orderBy}  from 'lodash';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 /**
  * Takes a vendor's information and shows a more detailed about screen for them,
@@ -26,6 +26,7 @@ export const VendorAboutScreen = ({navigation, route}) => {
 
             <MapView 
                 style={styles.map}
+ 		provider={PROVIDER_GOOGLE}
                 initialRegion= {{
                     latitude:vendor.latitude,
                     longitude:vendor.longitude,

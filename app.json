@@ -24,10 +24,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
-    },
+      },
+      "package": "uk.adeel.honsprojapp",
+	  "googleServicesFile": "./google-services.json",
+	  "config": {
+		  "googleMaps": {
+			"apiKey": "AIzaSyA-j23affkF-zrJ0OloEnn6fJGs7hYx2D0"
+		  }
+		},
+	},
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5978c38e-98c2-4b46-afb3-7d02c046e301"
+      }
     }
   }
 }

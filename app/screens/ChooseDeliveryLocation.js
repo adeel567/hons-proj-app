@@ -9,7 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
-import MapView, { Geojson } from "react-native-maps";
+import MapView, { Geojson, PROVIDER_GOOGLE } from "react-native-maps";
 import marker from "../../assets/marker-icon.png";
 import { axiosInstance } from "../api";
 import { AuthContext } from "../context/AuthContext";
@@ -96,6 +96,7 @@ export const ChooseDeliveryLocation = (props) => {
   return (
     <View style={styles.map}>
       <MapView
+		provider={PROVIDER_GOOGLE}
         testID="mapView"
         style={styles.map}
         region={region}

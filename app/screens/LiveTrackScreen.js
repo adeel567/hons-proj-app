@@ -16,7 +16,7 @@ import {
   Text,
   View,
 } from "react-native";
-import MapView, { Geojson, Marker } from "react-native-maps";
+import MapView, { Geojson, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import drone from "../../assets/drone.png";
 import shop from "../../assets/shop.png";
 import { axiosInstance } from "../api";
@@ -96,6 +96,7 @@ export const LiveTrackScreen = ({ route, navigation }) => {
   return (
     <View style={styles.map}>
       <MapView
+		provider={PROVIDER_GOOGLE}
         mapPadding={trackable ? { bottom: 250 } : { bottom: 0 }}
         style={styles.map}
         initialRegion={{

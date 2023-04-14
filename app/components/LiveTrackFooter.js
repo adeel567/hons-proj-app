@@ -58,7 +58,7 @@ export const LiveTrackFooter = (props) => {
                 <View style={{ alignItems: "center" }}>
                   <Subheading style={{ fontWeight: "bold" }}>
                     There are {trackingInfo.queue.relative_position} orders
-                    infront of you.
+                    ahead of you.
                   </Subheading>
                   <Paragraph>
                     Your lunch is delivery {trackingInfo.queue.overall_position}

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "468555897987",
+    "project_id": "honsprojapp",
+    "storage_bucket": "honsprojapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468555897987:android:c777f554ad906ce6ba4fb6",
+        "android_client_info": {
+          "package_name": "uk.adeel.honsprojapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "468555897987-33gpfugqcpnfuc0p083creuetq86afqn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.adeel.honsprojapp",
+            "certificate_hash": "83a45d29609b17a88a3feea4d63ef3716c3d3189"
+          }
+        },
+        {
+          "client_id": "468555897987-o334em21rcrgcn9fa9oobbob77f0g6c0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPqdB2IENG79IaMT06uUpDig3dDnyW05k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "468555897987-o334em21rcrgcn9fa9oobbob77f0g6c0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
