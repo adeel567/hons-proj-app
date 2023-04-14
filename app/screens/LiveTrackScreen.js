@@ -96,7 +96,7 @@ export const LiveTrackScreen = ({ route, navigation }) => {
   return (
     <View style={styles.map}>
       <MapView
-		provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_GOOGLE}
         mapPadding={trackable ? { bottom: 250 } : { bottom: 0 }}
         style={styles.map}
         initialRegion={{
@@ -115,7 +115,7 @@ export const LiveTrackScreen = ({ route, navigation }) => {
           <Marker
             title={"Drone"}
             testID={"droneMarker"}
-            icon={drone}
+            // icon={drone}
             description={
               "Making delivery " + trackingInfo.queue.current_delivery
             }
@@ -123,7 +123,9 @@ export const LiveTrackScreen = ({ route, navigation }) => {
               longitude: trackingInfo.drone_location.longitude,
               latitude: trackingInfo.drone_location.latitude,
             }}
-          />
+          >
+            <Image source={drone} style={{ width: 26, height: 26 }} />
+          </Marker>
         ) : (
           <></>
         )}
@@ -137,13 +139,15 @@ export const LiveTrackScreen = ({ route, navigation }) => {
               title="Pickup"
               testID="pickupMarker"
               key={index}
-              icon={shop}
+              // icon={shop}
               description={pickup.name}
               coordinate={{
                 longitude: pickup.longitude,
                 latitude: pickup.latitude,
               }}
-            />
+            >
+              <Image source={shop} style={{ width: 26, height: 26 }} />
+            </Marker>
           )
         )}
 

@@ -8,7 +8,6 @@ import {
   clearAuthTokens,
 } from "react-native-axios-jwt";
 import { Alert } from "react-native";
-import { Modal, Portal, Text, Button, Provider } from "react-native-paper";
 
 export const AuthContext = createContext();
 
@@ -19,7 +18,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(true);
   const [myIsLoggedIn, setMyIsLoggedIn] = useState(false);
   const [cartContent, setCartContent] = useState({});
   const [cartBadge, setCartBadge] = useState(0);
@@ -158,43 +157,45 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  /**
+/**
    * Grabs the profile information of the user
    */
   const fetchUserInfo = () => {
+    setIsRefreshing(true);
     axiosInstance
       .get("/profile")
       .then((response) => {
         setUserInfo(response.data);
+	    	setMyIsLoggedIn(true);
       })
       .catch((e) => {
         console.log(`fetch profile error ${e}`);
+		    Alert.alert("Login Error", "Issue when communicating with ILP API, please try again later.", [{ text: "OK" }]);
         logout();
-      });
-  };
-
-  /**
-   * Used to check whether the token is still valid, and if so refresh locally held data.
-   */
-  const refreshLoggedIn = () => {
-    setIsRefreshing(true);
-    isLoggedIn()
-      .then((val) => {
-        setMyIsLoggedIn(val);
-        if (val) {
-          refreshCache();
-        }
-        console.log(`refreshLog ${myIsLoggedIn}`);
       })
       .finally(() => {
         setIsRefreshing(false);
       });
+  };
+ 
+  /**
+   * Used to check whether the token is still valid, and if so refresh locally held data.
+   */
+  const refreshLoggedIn = () => {
+    isLoggedIn()
+      .then((val) => {
+        if (val) {
+          refreshCache();
+        }
+        console.log(`refreshLog ${val}`);
+      })
   };
 
   /**
    * Used when device wakes up from sleep, or launches app after inactivity.
    */
   useEffect(() => {
+    // setIsRefreshing(true);
     console.log("auth use effect");
     if (!myIsLoggedIn) {
       refreshLoggedIn();

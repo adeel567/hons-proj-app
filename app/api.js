@@ -7,8 +7,8 @@ import axios from "axios";
  * Set the base URL of the server here
  */
 
-// export const BASE_URL = "http://10.69.69.253:8000";
-export const BASE_URL = "https://hons-proj-api.adeel.uk:8443";
+export const BASE_URL = "http://10.69.69.253:8000";
+// export const BASE_URL = "https://hons-proj-api.adeel.uk:8443";
 
 
 export const axiosInstance = axios.create({
