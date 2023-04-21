@@ -35,7 +35,7 @@ export const AddToCartButton = (props) => {
       .then((response) => {
         if ((response.status = 200)) {
           Alert.alert("Add to cart", response.data.res, [
-            { text: "View Cart", onPress: goToCart },
+            // { text: "View Cart", onPress: goToCart },
             { text: "OK" },
           ]);
         }

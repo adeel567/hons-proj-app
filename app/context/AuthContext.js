@@ -186,6 +186,9 @@ export const AuthProvider = ({ children }) => {
       .then((val) => {
         if (val) {
           refreshCache();
+        } else {
+          setIsRefreshing(false);
+          setMyIsLoggedIn(false);
         }
         console.log(`refreshLog ${val}`);
       })
@@ -195,7 +198,6 @@ export const AuthProvider = ({ children }) => {
    * Used when device wakes up from sleep, or launches app after inactivity.
    */
   useEffect(() => {
-    // setIsRefreshing(true);
     console.log("auth use effect");
     if (!myIsLoggedIn) {
       refreshLoggedIn();

@@ -29,7 +29,7 @@ export const RemoveFromCartButton = (props) => {
       .then((response) => {
         if ((response.status = 200)) {
           Alert.alert("Remove From Cart", response.data.res, [
-            { text: "View Cart", onPress: goToCart },
+            // { text: "View Cart", onPress: goToCart },
             { text: "OK" },
           ]);
         }
