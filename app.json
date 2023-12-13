@@ -29,9 +29,9 @@
 	  "googleServicesFile": "./google-services.json",
 	  "config": {
 		  "googleMaps": {
-			"apiKey": "AIzaSyA-j23affkF-zrJ0OloEnn6fJGs7hYx2D0"
+			"apiKey": "REMOVED"
 		  }
-		},
+		}
 	},
     "web": {
       "favicon": "./assets/favicon.png"
